@@ -25,7 +25,7 @@ const Graph = () => {
       .range([50, height]);
 
     // Setup the canvas
-    const svg = d3.select('svg')
+    const svg = d3.select('#graph')
       .attr('width', width)
       .attr('height', height)
       .style('margin-top', 100)
@@ -45,7 +45,7 @@ const Graph = () => {
 
   // Used to update the bars of the graph
   const update = data => {
-    const svg = d3.select('svg');
+    const svg = d3.select('#graph');
 
     // The same scaling as the initial setup
     const xScale = d3.scaleBand()
@@ -106,9 +106,7 @@ const Graph = () => {
     update([5, 7, 2, 6, 9]);
   }, 4000);
 
-  return (
-    <svg />
-  );
+  return <svg id="graph" />;
 };
 
 export default Graph;
