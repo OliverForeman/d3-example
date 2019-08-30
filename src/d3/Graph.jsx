@@ -47,13 +47,13 @@ const Graph = () => {
   const update = data => {
     const svg = d3.select('#graph');
 
-    // The same scaling as the initial setup
+    // Update the scaling with the new data
     const xScale = d3.scaleBand()
       .domain(d3.range(data.length))
       .rangeRound([0, width])
       .paddingInner(0.08);
 
-    // The same scaling as the initial setup
+    // Update the scaling with the new data
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
       .range([50, height]);
