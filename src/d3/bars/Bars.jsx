@@ -65,7 +65,7 @@ const Bars = () => {
       .transition() // Start a transition for all attributes listed below
       .duration(500) // Time in ms for transition to last
       .attr('fill', 'white') // Change colour to white
-      .remove(); //Remove the element from the canvas
+      .remove(); // Remove the element from the canvas
 
     // Handle update of existing bars
     svg.selectAll('rect')

@@ -13,6 +13,7 @@ const GraphStatic = () => {
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
+    // Select a translated graphics tag for drawing the elements within
     const svg = d3.select('#graph')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
@@ -21,41 +22,49 @@ const GraphStatic = () => {
 
     // SCALES
 
+    // Create a scaling for the x axis
     const xScaleAxis = d3.scaleLinear()
       .domain([0, data.length])
       .range([0, width]);
 
+    // Create a scaling for the y axis
     const yScaleAxis = d3.scaleLinear()
       .domain([0, d3.max(data)])
       .range([height, 0]);
 
+    // Create an x scaling for the bars to be drawn with
     const xScaleBars = d3.scaleBand()
       .domain(d3.range(data.length))
       .range([0, width])
       .paddingInner(0.05)
       .paddingOuter(0.05);
 
+    // Create a y scaling for the bars to be drawn with
     const yScaleBars = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([0, height]);
+      .range([0, height]); // Values reversed compared to the scaling for the axis
 
     // AXIS
 
+    // Create the x axis
     svg.append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(xScaleAxis)
-        .ticks(data.length)
+        .ticks(data.length) // Give the approximate number of ticks to be drawn
       );
 
+    // Create the y axis
     svg.append('g')
       .call(d3.axisLeft(yScaleAxis));
 
+    // Add text to the x axis
     svg.append('text')
       .attr('text-anchor', 'end')
       .attr('x', width)
       .attr('y', height + margin.top + 20)
       .text('X Axis');
 
+    // Add text to the y axis
     svg.append('text')
       .attr('text-anchor', 'end')
       .attr('transform', 'rotate(-90)')
@@ -65,15 +74,16 @@ const GraphStatic = () => {
 
     // BARS
 
+    // Create the bars for the bar chart
     svg.selectAll('rect')
       .data(data)
       .enter()
       .append('rect')
       .attr('x', (d, i) => xScaleBars(i))
       .attr('y', d => height - yScaleBars(d))
-      .attr('width', xScaleBars.bandwidth())
+      .attr('width', xScaleBars.bandwidth()) // Gives all bars an equal width
       .attr('height', d => yScaleBars(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`);
+      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set colour according to data value
   };
 
   return <svg id="graph" />
