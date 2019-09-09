@@ -22,7 +22,7 @@ const Bars = () => {
     // Create a scaling for the y axis
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([50, height]);
+      .range([height, 50]);
 
     // Setup the canvas
     const svg = d3.select('#bars')
@@ -37,9 +37,9 @@ const Bars = () => {
       .enter() // Start adding new data points for any not currently mapped
       .append('rect') // Append a rect element (a bar for the chart)
       .attr('x', (d, i) => xScale(i)) // Position on the x axis according to the scaling
-      .attr('y', d => height - yScale(d)) // Position on the y axis according to the scaling
+      .attr('y', d => yScale(d)) // Position on the y axis according to the scaling
       .attr('width', xScale.bandwidth()) // Set the bar width to an even amount
-      .attr('height', d => yScale(d)) // Set the height of the bar according to the scaling
+      .attr('height', d => height - yScale(d)) // Set the height of the bar according to the scaling
       .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Colour bar according to data value
   };
 
@@ -56,7 +56,7 @@ const Bars = () => {
     // Update the scaling with the new data
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([50, height]);
+      .range([height, 50]);
 
     // Handle removal of excess bars e.g. old dataset had 10 elements and new dataset has 5, we need to remove 5 bars from the canvas
     svg.selectAll('rect')
@@ -72,8 +72,8 @@ const Bars = () => {
       .data(data) // Apply the new dataset
       .transition() // Start a transition for all attributes before next transition
       .duration(750) // Time in ms for transition
-      .attr('y', d => height - yScale(d)) // Set position on y axis according to scaling
-      .attr('height', d => yScale(d)) // Set bar height according to scaling
+      .attr('y', d => yScale(d)) // Set position on y axis according to scaling
+      .attr('height', d => height - yScale(d)) // Set bar height according to scaling
       .attr('fill', d => `rgb(0, 0, ${d * 10})`) // Colour the bar according to the data value
       .transition() // Start a new transition for next set of attributes
       .duration(750) // Time in ms for this transition
@@ -91,8 +91,8 @@ const Bars = () => {
       .transition() // Start a transition for the next set of attributes
       .duration(750) // Time in ms for this transition
       .delay(1500) // Time in ms to delay the start of the transition
-      .attr('y', d => height - yScale(d)) // Set the position on the y axis according to scaling
-      .attr('height', d => yScale(d)) // Set the height of the bar according to scaling
+      .attr('y', d => yScale(d)) // Set the position on the y axis according to scaling
+      .attr('height', d => height - yScale(d)) // Set the height of the bar according to scaling
       .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set the colour according to the data value
   };
 

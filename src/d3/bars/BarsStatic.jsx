@@ -22,7 +22,7 @@ const BarsStatic = () => {
     // Create a scaling for the y axis
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([50, height]);
+      .range([height, 50]);
 
     // Setup the canvas
     const svg = d3.select('#bars')
@@ -37,9 +37,9 @@ const BarsStatic = () => {
       .enter() // Start adding new data points for any not currently mapped
       .append('rect') // Append a rect element (a bar for the chart)
       .attr('x', (d, i) => xScale(i)) // Position on the x axis according to the scaling
-      .attr('y', d => height - yScale(d)) // Position on the y axis according to the scaling
+      .attr('y', d => yScale(d)) // Position on the y axis according to the scaling
       .attr('width', xScale.bandwidth()) // Set the bar width to an even amount
-      .attr('height', d => yScale(d)) // Set the height of the bar according to the scaling
+      .attr('height', d => height - yScale(d)) // Set the height of the bar according to the scaling
       .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Colour bar according to data value
   };
 

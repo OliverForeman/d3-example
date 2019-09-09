@@ -27,11 +27,6 @@ const Graph = () => {
       .domain([0, data.length])
       .range([0, width]);
 
-    // Create a scaling for the y axis
-    const yScaleAxis = d3.scaleLinear()
-      .domain([0, d3.max(data)])
-      .range([height, 0]);
-
     // Create an x scaling for the bars to be drawn with
     const xScaleBars = d3.scaleBand()
       .domain(d3.range(data.length))
@@ -39,10 +34,10 @@ const Graph = () => {
       .paddingInner(0.05)
       .paddingOuter(0.05);
 
-    // Create a y scaling for the bars to be drawn with
-    const yScaleBars = d3.scaleLinear()
+    // Create a scaling for the y axis
+    const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([0, height]); // Values reversed compared to the scaling for the axis
+      .range([height, 0]);
 
     // AXIS
 
@@ -57,7 +52,7 @@ const Graph = () => {
     // Create the y axis
     svg.append('g')
       .attr('class', 'yAxis') // Add a class so we can select it later
-      .call(d3.axisLeft(yScaleAxis));
+      .call(d3.axisLeft(yScale));
 
     // Add text to the x axis
     svg.append('text')
@@ -82,9 +77,9 @@ const Graph = () => {
       .enter()
       .append('rect')
       .attr('x', (d, i) => xScaleBars(i))
-      .attr('y', d => height - yScaleBars(d))
+      .attr('y', d => yScale(d))
       .attr('width', xScaleBars.bandwidth()) // Gives the bars an equal width
-      .attr('height', d => yScaleBars(d))
+      .attr('height', d => height - yScale(d))
       .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set colour according to data value
   };
 
@@ -99,11 +94,6 @@ const Graph = () => {
       .domain([0, data.length])
       .range([0, width]);
 
-    // Update the y axis scaling for the new data
-    const yScaleAxis = d3.scaleLinear()
-      .domain([0, d3.max(data)])
-      .range([height, 0]);
-
     // Update the x scaling for the bars for the new data
     const xScaleBars = d3.scaleBand()
       .domain(d3.range(data.length))
@@ -111,10 +101,10 @@ const Graph = () => {
       .paddingInner(0.05)
       .paddingOuter(0.05);
 
-    // Update the y scaling for the bars for the new data
-    const yScaleBars = d3.scaleLinear()
+    // Update the y axis scaling for the new data
+    const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([0, height]);
+      .range([height, 0]);
 
     // AXIS
 
@@ -130,7 +120,7 @@ const Graph = () => {
     svg.select('.yAxis')
       .transition() // Start a transition for the given duration
       .duration(750)
-      .call(d3.axisLeft(yScaleAxis)); // Draw with the new scaling
+      .call(d3.axisLeft(yScale)); // Draw with the new scaling
 
     // BARS
 
@@ -148,8 +138,8 @@ const Graph = () => {
       .data(data) // Apply the new dataset
       .transition() // Start a transition for the given duration
       .duration(750)
-      .attr('y', d => height - yScaleBars(d))
-      .attr('height', d => yScaleBars(d))
+      .attr('y', d => yScale(d))
+      .attr('height', d => height - yScale(d))
       .attr('fill', d => `rgb(0, 0, ${d * 10})`)
       .transition() // Start another transition for the given duration, starting after the delay
       .duration(750)
@@ -167,8 +157,8 @@ const Graph = () => {
       .transition()
       .duration(750)
       .delay(1500)
-      .attr('y', d => height - yScaleBars(d))
-      .attr('height', d => yScaleBars(d))
+      .attr('y', d => yScale(d))
+      .attr('height', d => height - yScale(d))
       .attr('fill', d => `rgb(0, 0, ${d * 10})`);
   };
 
