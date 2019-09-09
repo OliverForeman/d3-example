@@ -6,97 +6,173 @@ const Graph = () => {
     drawGraph();
   });
 
-  const width = 960;
-  const height = 500;
+  const margin = { top: 20, right: 20, bottom: 40, left: 60 };
+  const width = 960 - margin.left - margin.right;
+  const height = 500 - margin.top - margin.bottom;
 
-  // Does the initial drawing of the graph
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
+    // Select a translated graphics tag for drawing the elements within
+    const svg = d3.select('#graph')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+        .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    // SCALES
+
     // Create a scaling for the x axis
-    const xScale = d3.scaleBand()
-      .domain(d3.range(data.length))
-      .rangeRound([0, width])
-      .paddingInner(0.08);
+    const xScaleAxis = d3.scaleLinear()
+      .domain([0, data.length])
+      .range([0, width]);
 
     // Create a scaling for the y axis
-    const yScale = d3.scaleLinear()
+    const yScaleAxis = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([50, height]);
+      .range([height, 0]);
 
-    // Setup the canvas
-    const svg = d3.select('#graph')
-      .attr('width', width)
-      .attr('height', height)
-      .style('margin-top', 100)
-      .style('margin-left', 100);
-
-    // Draw initial bars
-    svg.selectAll('rect')
-      .data(data) // The starting data set
-      .enter() // Start adding new data points for any not currently mapped
-      .append('rect') // Append a rect element (a bar for the chart)
-      .attr('x', (d, i) => xScale(i)) // Position on the x axis according to the scaling
-      .attr('y', d => height - yScale(d)) // Position on the y axis according to the scaling
-      .attr('width', xScale.bandwidth()) // Set the bar width to an even amount
-      .attr('height', d => yScale(d)) // Set the height of the bar according to the scaling
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Colour bar according to data value
-  };
-
-  // Used to update the bars of the graph
-  const update = data => {
-    const svg = d3.select('#graph');
-
-    // Update the scaling with the new data
-    const xScale = d3.scaleBand()
+    // Create an x scaling for the bars to be drawn with
+    const xScaleBars = d3.scaleBand()
       .domain(d3.range(data.length))
-      .rangeRound([0, width])
-      .paddingInner(0.08);
+      .range([0, width])
+      .paddingInner(0.05)
+      .paddingOuter(0.05);
 
-    // Update the scaling with the new data
-    const yScale = d3.scaleLinear()
+    // Create a y scaling for the bars to be drawn with
+    const yScaleBars = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([50, height]);
+      .range([0, height]); // Values reversed compared to the scaling for the axis
 
-    // Handle removal of excess bars e.g. old dataset had 10 elements and new dataset has 5, we need to remove 5 bars from the canvas
-    svg.selectAll('rect')
-      .data(data) // Apply the new dataset
-      .exit() // Start handling any data not in the new dataset
-      .transition() // Start a transition for all attributes listed below
-      .duration(500) // Time in ms for transition to last
-      .attr('fill', 'white') // Change colour to white
-      .remove(); //Remove the element from the canvas
+    // AXIS
 
-    // Handle update of existing bars
-    svg.selectAll('rect')
-      .data(data) // Apply the new dataset
-      .transition() // Start a transition for all attributes before next transition
-      .duration(750) // Time in ms for transition
-      .attr('y', d => height - yScale(d)) // Set position on y axis according to scaling
-      .attr('height', d => yScale(d)) // Set bar height according to scaling
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`) // Colour the bar according to the data value
-      .transition() // Start a new transition for next set of attributes
-      .duration(750) // Time in ms for this transition
-      .delay(500) // Time in ms to delay the start of the transition
-      .attr('x', (d, i) => xScale(i)) // Set the position on the x axis according to scaling
-      .attr('width', xScale.bandwidth()); // Set the bar width to an even amount
+    // Create the x axis
+    svg.append('g')
+      .attr('class', 'xAxis') // Add a class so we can select it later
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(xScaleAxis)
+        .ticks(data.length) // Give the approximate number of ticks to be drawn
+      );
 
-    // Handle adding new bars e.g. old dataset had 5 elements and new dataset has 10, we need to add 5 new bars
+    // Create the y axis
+    svg.append('g')
+      .attr('class', 'yAxis') // Add a class so we can select it later
+      .call(d3.axisLeft(yScaleAxis));
+
+    // Add text to the x axis
+    svg.append('text')
+      .attr('text-anchor', 'end')
+      .attr('x', width)
+      .attr('y', height + margin.top + 20)
+      .text('X Axis');
+
+    // Add text to the y axis
+    svg.append('text')
+      .attr('text-anchor', 'end')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', -margin.left + 20)
+      .attr('x', -margin.top)
+      .text('Y Axis');
+
+    // BARS
+
+    // Create the bars for the bar chart
     svg.selectAll('rect')
-      .data(data) // Apply the new dataset
-      .enter() // Start adding new data points for any not currently mapped
-      .append('rect') // Append a rect element (a bar for the chart)
-      .attr('x', (d, i) => xScale(i)) // Set the position on the x axis according to scaling
-      .attr('width', xScale.bandwidth()) // Set the bar width to an even amount
-      .transition() // Start a transition for the next set of attributes
-      .duration(750) // Time in ms for this transition
-      .delay(1500) // Time in ms to delay the start of the transition
-      .attr('y', d => height - yScale(d)) // Set the position on the y axis according to scaling
-      .attr('height', d => yScale(d)) // Set the height of the bar according to scaling
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set the colour according to the data value
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('x', (d, i) => xScaleBars(i))
+      .attr('y', d => height - yScaleBars(d))
+      .attr('width', xScaleBars.bandwidth()) // Gives the bars an equal width
+      .attr('height', d => yScaleBars(d))
+      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set colour according to data value
   };
 
-  // Updata data set after 1 second, increases data points
+  // Used to update the entire bar chart
+  const update = data => {
+    const svg = d3.select('#graph').select('g');
+
+    // SCALES
+
+    // Update the x axis scaling for the new data
+    const xScaleAxis = d3.scaleLinear()
+      .domain([0, data.length])
+      .range([0, width]);
+
+    // Update the y axis scaling for the new data
+    const yScaleAxis = d3.scaleLinear()
+      .domain([0, d3.max(data)])
+      .range([height, 0]);
+
+    // Update the x scaling for the bars for the new data
+    const xScaleBars = d3.scaleBand()
+      .domain(d3.range(data.length))
+      .range([0, width])
+      .paddingInner(0.05)
+      .paddingOuter(0.05);
+
+    // Update the y scaling for the bars for the new data
+    const yScaleBars = d3.scaleLinear()
+      .domain([0, d3.max(data)])
+      .range([0, height]);
+
+    // AXIS
+
+    // Update the x axis
+    svg.select('.xAxis')
+      .transition() // Start a transition for the given duration
+      .duration(750)
+      .call(d3.axisBottom(xScaleAxis) // Draw with the new scaling
+        .ticks(data.length) // Update the number of ticks to display
+      );
+
+    // Update the y axis
+    svg.select('.yAxis')
+      .transition() // Start a transition for the given duration
+      .duration(750)
+      .call(d3.axisLeft(yScaleAxis)); // Draw with the new scaling
+
+    // BARS
+
+    // Handle the removal of removed data points/bars
+    svg.selectAll('rect')
+      .data(data) // Apply the new dataset
+      .exit() // Start handling data points not in the new dataset
+      .transition() // Start a transition for the given duration
+      .duration(500)
+      .attr('fill', 'white')
+      .remove(); // Remove the element from the canvas
+
+    // Handle the update of existing data points/bars
+    svg.selectAll('rect')
+      .data(data) // Apply the new dataset
+      .transition() // Start a transition for the given duration
+      .duration(750)
+      .attr('y', d => height - yScaleBars(d))
+      .attr('height', d => yScaleBars(d))
+      .attr('fill', d => `rgb(0, 0, ${d * 10})`)
+      .transition() // Start another transition for the given duration, starting after the delay
+      .duration(750)
+      .delay(500)
+      .attr('x', (d, i) => xScaleBars(i))
+      .attr('width', xScaleBars.bandwidth());
+
+    // Handle the adding of new data points/bars
+    svg.selectAll('rect')
+      .data(data) // Apply the new dataset
+      .enter() // Start handling the new data points
+      .append('rect') // Add new rect elements for the new data values
+      .attr('x', (d, i) => xScaleBars(i))
+      .attr('width', xScaleBars.bandwidth())
+      .transition()
+      .duration(750)
+      .delay(1500)
+      .attr('y', d => height - yScaleBars(d))
+      .attr('height', d => yScaleBars(d))
+      .attr('fill', d => `rgb(0, 0, ${d * 10})`);
+  };
+
+  // Update data set after 1 second, increases data points
   setTimeout(() => {
     update([10, 2, 7, 4, 50, 20, 51, 24, 6, 4, 9, 8]);
   }, 1000);
@@ -106,7 +182,7 @@ const Graph = () => {
     update([5, 7, 2, 6, 9]);
   }, 4000);
 
-  return <svg id="graph" />;
+  return <svg id="graph" />
 };
 
 export default Graph;

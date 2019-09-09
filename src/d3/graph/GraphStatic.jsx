@@ -1,49 +1,92 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
-const Graph = () => {
+const GraphStatic = () => {
   useEffect(() => {
     drawGraph();
   });
 
-  const width = 960;
-  const height = 500;
+  const margin = { top: 20, right: 20, bottom: 40, left: 60 };
+  const width = 960 - margin.left - margin.right;
+  const height = 500 - margin.top - margin.bottom;
 
-  // Does the initial drawing of the graph
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
+    // Select a translated graphics tag for drawing the elements within
+    const svg = d3.select('#graph')
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+        .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    // SCALES
+
     // Create a scaling for the x axis
-    const xScale = d3.scaleBand()
-      .domain(d3.range(data.length))
-      .rangeRound([0, width])
-      .paddingInner(0.08);
+    const xScaleAxis = d3.scaleLinear()
+      .domain([0, data.length])
+      .range([0, width]);
 
     // Create a scaling for the y axis
-    const yScale = d3.scaleLinear()
+    const yScaleAxis = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([50, height]);
+      .range([height, 0]);
 
-    // Setup the canvas
-    const svg = d3.select('#graph')
-      .attr('width', width)
-      .attr('height', height)
-      .style('margin-top', 100)
-      .style('margin-left', 100);
+    // Create an x scaling for the bars to be drawn with
+    const xScaleBars = d3.scaleBand()
+      .domain(d3.range(data.length))
+      .range([0, width])
+      .paddingInner(0.05)
+      .paddingOuter(0.05);
 
-    // Draw initial bars
+    // Create a y scaling for the bars to be drawn with
+    const yScaleBars = d3.scaleLinear()
+      .domain([0, d3.max(data)])
+      .range([0, height]); // Values reversed compared to the scaling for the axis
+
+    // AXIS
+
+    // Create the x axis
+    svg.append('g')
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(xScaleAxis)
+        .ticks(data.length) // Give the approximate number of ticks to be drawn
+      );
+
+    // Create the y axis
+    svg.append('g')
+      .call(d3.axisLeft(yScaleAxis));
+
+    // Add text to the x axis
+    svg.append('text')
+      .attr('text-anchor', 'end')
+      .attr('x', width)
+      .attr('y', height + margin.top + 20)
+      .text('X Axis');
+
+    // Add text to the y axis
+    svg.append('text')
+      .attr('text-anchor', 'end')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', -margin.left + 20)
+      .attr('x', -margin.top)
+      .text('Y Axis');
+
+    // BARS
+
+    // Create the bars for the bar chart
     svg.selectAll('rect')
-      .data(data) // The starting data set
-      .enter() // Start adding new data points for any not currently mapped
-      .append('rect') // Append a rect element (a bar for the chart)
-      .attr('x', (d, i) => xScale(i)) // Position on the x axis according to the scaling
-      .attr('y', d => height - yScale(d)) // Position on the y axis according to the scaling
-      .attr('width', xScale.bandwidth()) // Set the bar width to an even amount
-      .attr('height', d => yScale(d)) // Set the height of the bar according to the scaling
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Colour bar according to data value
+      .data(data)
+      .enter()
+      .append('rect')
+      .attr('x', (d, i) => xScaleBars(i))
+      .attr('y', d => height - yScaleBars(d))
+      .attr('width', xScaleBars.bandwidth()) // Gives all bars an equal width
+      .attr('height', d => yScaleBars(d))
+      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set colour according to data value
   };
 
-  return <svg id="graph" />;
+  return <svg id="graph" />
 };
 
-export default Graph;
+export default GraphStatic;

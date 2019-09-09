@@ -30,7 +30,7 @@ const Axis = () => {
 
     // Creating the scaling for the y axis
     const yScale = d3.scaleLinear()
-      .domain([0, Math.max(...data)]) // The range for the values to be written on the axis (0 to the largest data value)
+      .domain([0, d3.max(data)]) // The range for the values to be written on the axis (0 to the largest data value)
       .range([height, 0]); // The positioning of the axis (height to 0 in px), reversed as drawing starts at the top left
 
     // Create the x axis
