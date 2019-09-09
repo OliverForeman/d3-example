@@ -1,0 +1,18 @@
+.controller-container {
+  display: flex;
+  background-color: ghostwhite;
+  border: 1px solid black;
+  border-radius: 5%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.75), 0 6px 20px 0 rgba(0, 0, 0, 0.75);
+  margin: 5%;
+}
+
+.controller-option-panel {
+  flex-grow: 1;
+  padding: 2%;
+}
+
+.controller-component-container {
+  flex-grow: 2;
+  margin: 0 2vw;
+}

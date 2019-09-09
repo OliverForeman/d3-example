@@ -27,9 +27,7 @@ const Bars = () => {
     // Setup the canvas
     const svg = d3.select('#bars')
       .attr('width', width)
-      .attr('height', height)
-      .style('margin-top', 100)
-      .style('margin-left', 100);
+      .attr('height', height);
 
     // Draw initial bars
     svg.selectAll('rect')
