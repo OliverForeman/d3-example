@@ -87,10 +87,11 @@ const Bars = () => {
       .enter() // Start adding new data points for any not currently mapped
       .append('rect') // Append a rect element (a bar for the chart)
       .attr('x', (d, i) => xScale(i)) // Set the position on the x axis according to scaling
+      .attr('y', height) // Set the position on the y axis to be the bottom of the graph
       .attr('width', xScale.bandwidth()) // Set the bar width to an even amount
       .transition() // Start a transition for the next set of attributes
       .duration(750) // Time in ms for this transition
-      .delay(1500) // Time in ms to delay the start of the transition
+      .delay(1750) // Time in ms to delay the start of the transition
       .attr('y', d => yScale(d)) // Set the position on the y axis according to scaling
       .attr('height', d => height - yScale(d)) // Set the height of the bar according to scaling
       .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set the colour according to the data value
