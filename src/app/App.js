@@ -1,13 +1,15 @@
 import React from 'react';
 import './App.css';
-import Graph from '../d3/graph/Graph';
+import Bars from '../d3/bars/Bars';
 import Axis from '../d3/axis/Axis';
+import Graph from '../d3/graph/GraphStatic';
 
 function App() {
   return (
     <div className="App">
-      <Graph />
+      <Bars />
       <Axis />
+      <Graph />
     </div>
   );
 }
