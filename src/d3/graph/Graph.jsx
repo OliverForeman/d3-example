@@ -153,10 +153,11 @@ const Graph = () => {
       .enter() // Start handling the new data points
       .append('rect') // Add new rect elements for the new data values
       .attr('x', (d, i) => xScaleBars(i))
+      .attr('y', height)
       .attr('width', xScaleBars.bandwidth())
       .transition()
       .duration(750)
-      .delay(1500)
+      .delay(1750)
       .attr('y', d => yScale(d))
       .attr('height', d => height - yScale(d))
       .attr('fill', d => `rgb(0, 0, ${d * 10})`);
