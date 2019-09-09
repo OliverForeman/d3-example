@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import Bars from '../d3/bars/Bars';
 import Axis from '../d3/axis/Axis';
-import Graph from '../d3/graph/GraphStatic';
+import Graph from '../d3/graph/Graph';
 
 function App() {
   return (
