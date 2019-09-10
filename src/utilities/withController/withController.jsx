@@ -13,8 +13,8 @@ const withController = (title, componentList) => () => {
     <button key={label} value={label} onClick={toggleSelectedComponent}>{label}</button>
   );
 
-  const renderComponent = ({ label, ControlledComponent }) => (
-    selectedComponent === label && <ControlledComponent key={label} />
+  const renderComponent = ({ label, ControlledComponent, data }) => (
+    selectedComponent === label && <ControlledComponent key={label} data={data} />
   );
 
   return (
