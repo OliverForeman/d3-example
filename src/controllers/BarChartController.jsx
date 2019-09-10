@@ -7,11 +7,13 @@ import GraphStatic from '../d3/graph/GraphStatic';
 import Graph from '../d3/graph/Graph';
 import GraphInteractive from '../d3/graph/GraphInteractive';
 import useInputForm from '../utilities/useInputForm';
+import kebabToWords from '../utilities/kebabToWords';
 
 const BarChartController = () => {
   const textInput = useInputForm(0);
   const [data, setData] = useState([]);
   const [selectedOption, setSelectedOption] = useState('axis-static');
+  const graphTypes = ['axis-static', 'axis-animated', 'bars-static', 'bars-animated', 'graph-static', 'graph-animated', 'graph-interactive'];
 
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
@@ -55,31 +57,38 @@ const BarChartController = () => {
     setData([]);
   };
 
+  const createOptionButton = graphType => (
+    <button key={graphType} type="button" value={graphType} onClick={() => setSelectedOption(graphType)}>{kebabToWords(graphType)}</button>
+  );
+
+  const getComponent = () => {
+    switch (selectedOption) {
+      case 'axis-static': return <AxisStatic />;
+      case 'axis-animated': return <Axis />;
+      case 'bars-static': return <BarsStatic />;
+      case 'bars-animated': return <Bars />;
+      case 'graph-static': return <GraphStatic />;
+      case 'graph-animated': return <Graph />;
+      case 'graph-interactive': return <GraphInteractive data={data} />;
+      default: return <AxisStatic />;
+    }
+  };
+
+  const displayInteractionsClass = `display-interactions${selectedOption === 'graph-interactive' ? '' : ' hide'}`;
+
   return (
     <>
       <div className="display-control">
-        <button type="button" value="axis-static" onClick={e => setSelectedOption(e.target.value)}>Axis Static</button>
-        <button type="button" value="axis-animated" onClick={e => setSelectedOption(e.target.value)}>Axis Animated</button>
-        <button type="button" value="bars-static" onClick={e => setSelectedOption(e.target.value)}>Bars Static</button>
-        <button type="button" value="bars-animated" onClick={e => setSelectedOption(e.target.value)}>Bars Animated</button>
-        <button type="button" value="graph-static" onClick={e => setSelectedOption(e.target.value)}>Graph Static</button>
-        <button type="button" value="graph-animated" onClick={e => setSelectedOption(e.target.value)}>Graph Animated</button>
-        <button type="button" value="graph-interactive" onClick={e => setSelectedOption(e.target.value)}>Graph Interactive</button>
+        {graphTypes.map(createOptionButton)}
       </div>
       <hr />
       <div className="display-content">
-        {selectedOption === 'axis-static' && <AxisStatic />}
-        {selectedOption === 'axis-animated' && <Axis />}
-        {selectedOption === 'bars-static' && <BarsStatic />}
-        {selectedOption === 'bars-animated' && <Bars />}
-        {selectedOption === 'graph-static' && <GraphStatic />}
-        {selectedOption === 'graph-animated' && <Graph />}
-        {selectedOption === 'graph-interactive' && <GraphInteractive data={data} />}
+        {getComponent()}
       </div>
       <hr />
-      <div className="display-interactions">
+      <div className={displayInteractionsClass}>
         <form>
-          <input type="number" {...textInput} />
+          <input type="number" min="0" {...textInput} />
           <button type="submit" onClick={addNumberHandler}>Add</button>
           <button type="button" onClick={addRandomNumber}>Add Random</button>
           <button type="button" onClick={addRandomNumbers}>Add <i>X</i> Random</button>

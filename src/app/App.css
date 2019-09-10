@@ -5,7 +5,7 @@
   border: 1px solid black;
   border-radius: 5%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.75), 0 6px 20px 0 rgba(0, 0, 0, 0.75);
-  margin: 5%;
+  margin: 2% 5%;
 }
 
 .graph-control {
@@ -64,4 +64,9 @@ hr {
   border-radius: 25%;
   padding: 0.5%;
   padding-left: 2%;
+}
+
+.display-interactions.hide {
+  height: 0;
+  opacity: 0;
 }
