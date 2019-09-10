@@ -112,6 +112,7 @@ const Graph = () => {
     svg.select('.xAxis')
       .transition() // Start a transition for the given duration
       .duration(750)
+      .delay(500)
       .call(d3.axisBottom(xScaleAxis) // Draw with the new scaling
         .ticks(data.length) // Update the number of ticks to display
       );
@@ -120,6 +121,7 @@ const Graph = () => {
     svg.select('.yAxis')
       .transition() // Start a transition for the given duration
       .duration(750)
+      .delay(1250)
       .call(d3.axisLeft(yScale)); // Draw with the new scaling
 
     // BARS
@@ -136,16 +138,16 @@ const Graph = () => {
     // Handle the update of existing data points/bars
     svg.selectAll('rect')
       .data(data) // Apply the new dataset
-      .transition() // Start a transition for the given duration
-      .duration(750)
-      .attr('y', d => yScale(d))
-      .attr('height', d => height - yScale(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`)
       .transition() // Start another transition for the given duration, starting after the delay
       .duration(750)
       .delay(500)
       .attr('x', (d, i) => xScaleBars(i))
-      .attr('width', xScaleBars.bandwidth());
+      .attr('width', xScaleBars.bandwidth())
+      .transition() // Start a transition for the given duration
+      .duration(750)
+      .attr('y', d => yScale(d))
+      .attr('height', d => height - yScale(d))
+      .attr('fill', d => `rgb(0, 0, ${d * 10})`);
 
     // Handle the adding of new data points/bars
     svg.selectAll('rect')
@@ -157,7 +159,7 @@ const Graph = () => {
       .attr('width', xScaleBars.bandwidth())
       .transition()
       .duration(750)
-      .delay(1750)
+      .delay(1250)
       .attr('y', d => yScale(d))
       .attr('height', d => height - yScale(d))
       .attr('fill', d => `rgb(0, 0, ${d * 10})`);
