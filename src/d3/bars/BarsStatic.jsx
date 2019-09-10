@@ -25,7 +25,7 @@ const BarsStatic = () => {
       .range([height, 50]);
 
     // Setup the canvas
-    const svg = d3.select('#bars')
+    const svg = d3.select('#bars-static')
       .attr('width', width)
       .attr('height', height);
 
@@ -41,7 +41,7 @@ const BarsStatic = () => {
       .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Colour bar according to data value
   };
 
-  return <svg id="bars" />;
+  return <svg id="bars-static" />;
 };
 
 export default BarsStatic;
