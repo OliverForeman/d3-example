@@ -17,11 +17,15 @@ const GraphInteractive = ({ data }) => {
   const height = 500 - margin.top - margin.bottom;
 
   const drawGraph = () => {
-    const svg = d3.select('#graph')
+    const svg = d3.select('#graph-interactive')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+    const colour = d3.scaleLinear()
+      .domain([1, d3.max(data)])
+      .range(['orange', 'purple']);
 
     const xScaleAxis = d3.scaleLinear()
       .domain([0, data.length])
@@ -69,11 +73,15 @@ const GraphInteractive = ({ data }) => {
       .attr('y', d => yScale(d))
       .attr('width', xScaleBars.bandwidth())
       .attr('height', d => height - yScale(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 5})`);
+      .attr('fill', d => colour(d));
   };
 
   const update = data => {
-    const svg = d3.select('#graph').select('g');
+    const svg = d3.select('#graph-interactive').select('g');
+
+    const colour = d3.scaleLinear()
+      .domain([1, d3.max(data)])
+      .range(['orange', 'purple']);
 
     const xScaleAxis = d3.scaleLinear()
       .domain([0, data.length])
@@ -122,7 +130,7 @@ const GraphInteractive = ({ data }) => {
       .duration(750)
       .attr('y', d => yScale(d))
       .attr('height', d => height - yScale(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 5})`);
+      .attr('fill', d => colour(d));
 
     svg.selectAll('rect')
       .data(data)
@@ -136,10 +144,10 @@ const GraphInteractive = ({ data }) => {
       .delay(1250)
       .attr('y', d => yScale(d))
       .attr('height', d => height - yScale(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 5})`);
+      .attr('fill', d => colour(d));
   };
 
-  return <svg id="graph" />
+  return <svg id="graph-interactive" />
 };
 
 export default GraphInteractive;

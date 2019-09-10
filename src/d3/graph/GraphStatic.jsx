@@ -14,7 +14,7 @@ const GraphStatic = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
     // Select a translated graphics tag for drawing the elements within
-    const svg = d3.select('#graph')
+    const svg = d3.select('#graph-static')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
@@ -81,7 +81,7 @@ const GraphStatic = () => {
       .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set colour according to data value
   };
 
-  return <svg id="graph" />
+  return <svg id="graph-static" />
 };
 
 export default GraphStatic;

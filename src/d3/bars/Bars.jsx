@@ -97,7 +97,7 @@ const Bars = () => {
 
   // Updata data set after 1 second, increases data points
   setTimeout(() => {
-    update([10, 2, 7, 4, 50, 20, 51, 24, 6, 4, 9, 8]);
+    update([10, 2, 7, 4, 50, 20, 42, 24, 6, 4, 36, 8]);
   }, 1000);
 
   // Update data set after 4 seconds, 3 seconds after first update, reduces data points

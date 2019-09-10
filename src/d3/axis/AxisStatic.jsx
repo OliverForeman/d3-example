@@ -15,7 +15,7 @@ const AxisStatic = () => {
   // Draw the initial scales for a graph
   const drawGraph = () => {
     // Get the svg element
-    const svg = d3.select('#axis')
+    const svg = d3.select('#axis-static')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
@@ -57,7 +57,7 @@ const AxisStatic = () => {
       .text('Y axis title'); // The writing for the title of the axis
   };
 
-  return <svg id="axis" />
+  return <svg id="axis-static" />
 };
 
 export default AxisStatic;

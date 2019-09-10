@@ -1,0 +1,52 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  background-color: whitesmoke;
+  border: 1px solid black;
+  border-radius: 5%;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.75), 0 6px 20px 0 rgba(0, 0, 0, 0.75);
+  margin: 5%;
+}
+
+hr {
+  margin-left: 2vw;
+  margin-right: 2vw;
+}
+
+.display-control {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1vw;
+}
+
+.display-control button {
+  font-size: 1.75rem;
+  background-color: lightblue;
+  border-radius: 25%;
+}
+
+.display-content {
+  margin: auto;
+}
+
+.display-interactions form {
+  display: flex;
+  justify-content: center;
+  padding: 1vw;
+}
+
+.display-interactions button, input {
+  font-size: 1.25rem;
+  background-color: lightblue;
+  margin: 0.25%;
+}
+
+.display-interactions button {
+  border-radius: 20%;
+}
+
+.display-interactions input {
+  border-radius: 25%;
+  padding: 0.5%;
+  padding-left: 2%;
+}
