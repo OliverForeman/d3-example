@@ -51,7 +51,7 @@ const Axis = () => {
       .attr('text-anchor', 'end') // Anchor end of text to positioning
       .attr('x', width) // Set the x position for the text
       .attr('y', height + margin.top + 20) // Set the y position for the text (height of graph + margin + distance to place below graph)
-      .text('X axis title'); // The writing for the title of the axis
+      .text('X Axis'); // The writing for the title of the axis
 
     // Add a label to the y axis
     svg.append('text')
@@ -59,7 +59,7 @@ const Axis = () => {
       .attr('transform', 'rotate(-90)') // Rotate the text so it's vertical
       .attr('y', -margin.left + 20) // Move to margin then in (moves on x axis due to rotation)
       .attr('x', -margin.top) // Move down from edge of graph (moves on y axis due to rotation)
-      .text('Y axis title'); // The writing for the title of the axis
+      .text('Y Axis'); // The writing for the title of the axis
   };
 
   // Update the scales
