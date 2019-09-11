@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import BarsStatic from '../d3/bars/BarsStatic';
-import Bars from '../d3/bars/Bars';
 import AxisStatic from '../d3/axis/AxisStatic';
 import Axis from '../d3/axis/Axis';
-import GraphStatic from '../d3/graph/GraphStatic';
-import Graph from '../d3/graph/Graph';
-import GraphInteractive from '../d3/graph/GraphInteractive';
+import BarsStatic from '../d3/bar-chart/bars/BarsStatic';
+import Bars from '../d3/bar-chart/bars/Bars';
+import GraphStatic from '../d3/bar-chart/graph/GraphStatic';
+import Graph from '../d3/bar-chart/graph/Graph';
+import GraphInteractive from '../d3/bar-chart/graph/GraphInteractive';
 import useInputForm from '../utilities/useInputForm';
 import kebabToWords from '../utilities/kebabToWords';
 
