@@ -46,11 +46,10 @@ const LinesStatic = () => {
       .attr('stroke-width', 3.0); // Set how thick the drawn line should be
 
     // Add dots at each data point on the line
-    svg.selectAll('.dot')
+    svg.selectAll('circle')
       .data(data) // Apply the dataset
       .enter() // Add new data points for any not currently mapped
       .append('circle') // Add a circle for each new data point
-        .attr('class', 'dot') // Add a class for selecting the data points
         .attr('cx', (d, i) => xScale(i)) // Position on the x axis according to the array index
         .attr('cy', d => yScale(d)) // Position on the y axis according to the data value
         .attr('r', 5); // Set the radius of the circle

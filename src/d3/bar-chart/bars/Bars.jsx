@@ -51,7 +51,7 @@ const Bars = () => {
 
   // Used to update the bars of the graph
   const update = data => {
-    const svg = d3.select('#bars');
+    const svg = d3.select('#bars').select('g');
 
     // Update the colour scale for the new data
     const colour = d3.scaleLinear()
@@ -67,7 +67,7 @@ const Bars = () => {
     // Update the scaling with the new data
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([height, 50]);
+      .range([height, 0]);
 
     // Handle removal of excess bars e.g. old dataset had 10 elements and new dataset has 5, we need to remove 5 bars from the canvas
     svg.selectAll('rect')
