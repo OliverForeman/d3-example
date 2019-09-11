@@ -11,9 +11,9 @@ import kebabToWords from '../utilities/kebabToWords';
 
 const BarChartController = () => {
   const textInput = useInputForm(0);
-  const [data, setData] = useState([]);
-  const [selectedOption, setSelectedOption] = useState('axis-static');
   const graphTypes = ['axis-static', 'axis-animated', 'bars-static', 'bars-animated', 'graph-static', 'graph-animated', 'graph-interactive'];
+  const [selectedOption, setSelectedOption] = useState(graphTypes[0]);
+  const [data, setData] = useState([]);
 
   const getRandomInt = (min, max) => {
     min = Math.ceil(min);
