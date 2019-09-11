@@ -12,6 +12,11 @@ const BarsStatic = () => {
   // Does the initial drawing of the graph
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
+    
+    // Create a colour scale to use for the bars
+    const colour = d3.scaleLinear()
+    .domain([1, d3.max(data)])
+    .range(['orange', 'purple']);
 
     // Create a scaling for the x axis
     const xScale = d3.scaleBand()
@@ -38,7 +43,7 @@ const BarsStatic = () => {
       .attr('y', d => yScale(d)) // Position on the y axis according to the scaling
       .attr('width', xScale.bandwidth()) // Set the bar width to an even amount
       .attr('height', d => height - yScale(d)) // Set the height of the bar according to the scaling
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Colour bar according to data value
+      .attr('fill', d => colour(d)); // Colour bar according to data value
   };
 
   return <svg id="bars-static" />;

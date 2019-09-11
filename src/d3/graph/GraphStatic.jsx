@@ -13,6 +13,11 @@ const GraphStatic = () => {
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
+    // Create a colour scale for the bars
+    const colour = d3.scaleLinear()
+      .domain([1, d3.max(data)])
+      .range(['orange', 'purple']);
+
     // Select a translated graphics tag for drawing the elements within
     const svg = d3.select('#graph-static')
       .attr('width', width + margin.left + margin.right)
@@ -78,7 +83,7 @@ const GraphStatic = () => {
       .attr('y', d => yScale(d))
       .attr('width', xScaleBars.bandwidth()) // Gives all bars an equal width
       .attr('height', d => height - yScale(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set colour according to data value
+      .attr('fill', d => colour(d)); // Set colour according to data value
   };
 
   return <svg id="graph-static" />

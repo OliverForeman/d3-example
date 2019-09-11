@@ -1,11 +1,25 @@
-.app-container {
+.display-container {
   display: flex;
   flex-direction: column;
   background-color: whitesmoke;
   border: 1px solid black;
   border-radius: 5%;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.75), 0 6px 20px 0 rgba(0, 0, 0, 0.75);
-  margin: 5%;
+  margin: 2% 5%;
+}
+
+.graph-control {
+  display: flex;
+  justify-content: center;
+}
+
+.graph-control button {
+  color: white;
+  font-size: 1.75rem;
+  background-color: rgb(2, 166, 221);
+  border-radius: 25%;
+  padding: 0.5%;
+  margin: 0 0.5%;
 }
 
 hr {
@@ -23,6 +37,7 @@ hr {
   font-size: 1.75rem;
   background-color: lightblue;
   border-radius: 25%;
+  padding: 0.5%;
 }
 
 .display-content {
@@ -49,4 +64,8 @@ hr {
   border-radius: 25%;
   padding: 0.5%;
   padding-left: 2%;
+}
+
+.display-interactions.hide {
+  display: none;
 }

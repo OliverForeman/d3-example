@@ -20,6 +20,11 @@ const Graph = () => {
       .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
+    // Create a colour scale for the bars
+    const colour = d3.scaleLinear()
+      .domain([1, d3.max(data)])
+      .range(['orange', 'purple']);
+
     // SCALES
 
     // Create a scaling for the x axis
@@ -80,12 +85,17 @@ const Graph = () => {
       .attr('y', d => yScale(d))
       .attr('width', xScaleBars.bandwidth()) // Gives the bars an equal width
       .attr('height', d => height - yScale(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`); // Set colour according to data value
+      .attr('fill', d => colour(d)); // Set colour according to data value
   };
 
   // Used to update the entire bar chart
   const update = data => {
     const svg = d3.select('#graph').select('g');
+
+    // Update the colour scale for the new data
+    const colour = d3.scaleLinear()
+      .domain([1, d3.max(data)])
+      .range(['orange', 'purple']);
 
     // SCALES
 
@@ -132,7 +142,7 @@ const Graph = () => {
       .exit() // Start handling data points not in the new dataset
       .transition() // Start a transition for the given duration
       .duration(500)
-      .attr('fill', 'white')
+      .attr('fill', 'whitesmoke')
       .remove(); // Remove the element from the canvas
 
     // Handle the update of existing data points/bars
@@ -147,7 +157,7 @@ const Graph = () => {
       .duration(750)
       .attr('y', d => yScale(d))
       .attr('height', d => height - yScale(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`);
+      .attr('fill', d => colour(d));
 
     // Handle the adding of new data points/bars
     svg.selectAll('rect')
@@ -162,7 +172,7 @@ const Graph = () => {
       .delay(1250)
       .attr('y', d => yScale(d))
       .attr('height', d => height - yScale(d))
-      .attr('fill', d => `rgb(0, 0, ${d * 10})`);
+      .attr('fill', d => colour(d));
   };
 
   // Update data set after 1 second, increases data points
