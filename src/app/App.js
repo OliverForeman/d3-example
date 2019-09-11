@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
 import './App.css';
+import kebabToWords from '../utilities/kebabToWords';
 import BarChartController from '../controllers/BarChartController';
 
 const App = () => {
   const [selectedOption, setSelectedOption] = useState('bar-chart');
+  const graphTypes = ['bar-chart', 'line-graph'];
+
+  const getComponent = () => {
+    switch (selectedOption) {
+      case 'bar-chart': return <BarChartController />;
+      case 'line-graph': return true;
+      default: return <BarChartController />;
+    }
+  };
+
+  const createOptionButton = graphType => (
+    <button key={graphType} type="button" value={graphType} onClick={() => setSelectedOption(graphType)}>{kebabToWords(graphType)}</button>
+  );
 
   return (
     <>
       <div className="display-container">
-        {selectedOption === 'bar-chart' && <BarChartController />}
-        {selectedOption === 'line-graph'}
+        {getComponent()}
       </div>
       <div className="graph-control">
-        <button type="button" value="bar-chart" onClick={e => setSelectedOption(e.target.value)}>Bar Chart</button>
-        <button type="button" value="line-graph" onClick={e => setSelectedOption(e.target.value)}>Line Graph</button>
+        {graphTypes.map(createOptionButton)}
       </div>
     </>
   );
