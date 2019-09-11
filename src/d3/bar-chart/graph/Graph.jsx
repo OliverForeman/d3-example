@@ -14,7 +14,7 @@ const Graph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
     // Select a translated graphics tag for drawing the elements within
-    const svg = d3.select('#graph')
+    const svg = d3.select('#bars-graph')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
@@ -90,7 +90,7 @@ const Graph = () => {
 
   // Used to update the entire bar chart
   const update = data => {
-    const svg = d3.select('#graph').select('g');
+    const svg = d3.select('#bars-graph').select('g');
 
     // Update the colour scale for the new data
     const colour = d3.scaleLinear()
@@ -185,7 +185,7 @@ const Graph = () => {
     update([5, 7, 2, 6, 9]);
   }, 4000);
 
-  return <svg id="graph" />
+  return <svg id="bars-graph" />
 };
 
 export default Graph;

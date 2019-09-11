@@ -15,8 +15,8 @@ const Lines = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
     // Create the scaling for the x axis
-    const xScale = d3.scaleBand()
-      .domain(d3.range(data.length)) // The range of values to be used for the scale
+    const xScale = d3.scaleLinear()
+      .domain([0, data.length - 1]) // The range of values to be used for the scale
       .range([0, width]); // The positioning for the scale to range over
 
     // Create the scaling for the y axis
@@ -61,8 +61,8 @@ const Lines = () => {
     const svg = d3.select('#lines').select('g');
 
     // Update the x scale with the new data set
-    const xScale = d3.scaleBand()
-      .domain(d3.range(data.length))
+    const xScale = d3.scaleLinear()
+      .domain([0, data.length - 1])
       .range([0, width]);
 
     // Update the y scale with the new data set

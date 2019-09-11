@@ -17,7 +17,7 @@ const GraphInteractive = ({ data }) => {
   const height = 500 - margin.top - margin.bottom;
 
   const drawGraph = () => {
-    const svg = d3.select('#graph-interactive')
+    const svg = d3.select('#bars-graph-interactive')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
@@ -77,7 +77,7 @@ const GraphInteractive = ({ data }) => {
   };
 
   const update = data => {
-    const svg = d3.select('#graph-interactive').select('g');
+    const svg = d3.select('#bars-graph-interactive').select('g');
 
     const colour = d3.scaleLinear()
       .domain([1, d3.max(data)])
@@ -147,7 +147,7 @@ const GraphInteractive = ({ data }) => {
       .attr('fill', d => colour(d));
   };
 
-  return <svg id="graph-interactive" />
+  return <svg id="bars-graph-interactive" />
 };
 
 export default GraphInteractive;

@@ -10,16 +10,12 @@ const GraphStatic = () => {
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
+  // Used to draw the graph
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
-    // Create a colour scale for the bars
-    const colour = d3.scaleLinear()
-      .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
-
-    // Select a translated graphics tag for drawing the elements within
-    const svg = d3.select('#bars-graph-static')
+    // Setup the canvas
+    const svg = d3.select('#lines-graph-static')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
@@ -27,19 +23,12 @@ const GraphStatic = () => {
 
     // SCALES
 
-    // Create a scaling for the x axis
-    const xScaleAxis = d3.scaleLinear()
-      .domain([0, data.length])
+    // Create the scaling for the x axis
+    const xScale = d3.scaleLinear()
+      .domain([0, data.length - 1])
       .range([0, width]);
 
-    // Create an x scaling for the bars to be drawn with
-    const xScaleBars = d3.scaleBand()
-      .domain(d3.range(data.length))
-      .range([0, width])
-      .paddingInner(0.05)
-      .paddingOuter(0.05);
-
-    // Create a scaling for the y axis
+    // Create the scaling for the y axis
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
       .range([height, 0]);
@@ -49,8 +38,8 @@ const GraphStatic = () => {
     // Create the x axis
     svg.append('g')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScaleAxis)
-        .ticks(data.length) // Give the approximate number of ticks to be drawn
+      .call(d3.axisBottom(xScale)
+        .ticks(data.length)
       );
 
     // Create the y axis
@@ -72,21 +61,33 @@ const GraphStatic = () => {
       .attr('x', -margin.top)
       .text('Y Axis');
 
-    // BARS
+    // LINE & DOTS
 
-    // Create the bars for the bar chart
-    svg.selectAll('rect')
+    // Create the line generator for drawing
+    const line = d3.line()
+      .x((d, i) => xScale(i))
+      .y(d => yScale(d))
+      .curve(d3.curveMonotoneX);
+
+    // Create the line from the data
+    svg.append('path')
+      .datum(data)
+      .attr('d', line)
+      .attr('fill', 'none')
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3.0);
+
+    // Draw circles at each data point
+    svg.selectAll('circle')
       .data(data)
       .enter()
-      .append('rect')
-      .attr('x', (d, i) => xScaleBars(i))
-      .attr('y', d => yScale(d))
-      .attr('width', xScaleBars.bandwidth()) // Gives all bars an equal width
-      .attr('height', d => height - yScale(d))
-      .attr('fill', d => colour(d)); // Set colour according to data value
+      .append('circle')
+        .attr('cx', (d, i) => xScale(i))
+        .attr('cy', d => yScale(d))
+        .attr('r', 5);
   };
 
-  return <svg id="bars-graph-static" />
+  return <svg id="lines-graph-static" />
 };
 
 export default GraphStatic;
