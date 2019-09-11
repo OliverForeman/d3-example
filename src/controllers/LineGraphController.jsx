@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import kebabToWords from '../utilities/kebabToWords';
+import LinesStatic from '../d3/line-graph/lines/LinesStatic';
 
 const LineGraphController = () => {
-  const graphTypes = ['line-static'];
+  const graphTypes = ['lines-static'];
   const [selectedOption, setSelectedOption] = useState(graphTypes[0]);
 
   const createOptionButton = graphType => (
@@ -11,8 +12,8 @@ const LineGraphController = () => {
 
   const getComponent = () => {
     switch (selectedOption) {
-      case 'line-static': return <svg />;
-      default: return <svg />;
+      case 'lines-static': return <LinesStatic />;
+      default: return <LinesStatic />;
     }
   };
 
