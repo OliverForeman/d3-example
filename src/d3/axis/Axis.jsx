@@ -64,7 +64,7 @@ const Axis = () => {
 
   // Update the scales
   const update = data => {
-    const svg = d3.select('#axis');
+    const svg = d3.select('#axis').select('g');
 
     // Update the scaling with the new data
     const xScale = d3.scaleLinear()
