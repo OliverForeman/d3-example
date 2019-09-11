@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
-const Lines = () => {
+const Graph = () => {
   useEffect(() => {
     drawGraph();
   });
@@ -14,51 +14,87 @@ const Lines = () => {
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
-    // Create the scaling for the x axis
-    const xScale = d3.scaleLinear()
-      .domain([0, data.length - 1]) // The range of values to be used for the scale
-      .range([0, width]); // The positioning for the scale to range over
-
-    // Create the scaling for the y axis
-    const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data)]) // The range of values to be used for the scale
-      .range([height, 0]); // The positioning for the scale to range over (reversed to start at bottom-left)
-
     // Setup the canvas
-    const svg = d3.select('#lines')
+    const svg = d3.select('#lines-graph')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
-    
-    // Create a line generator for drawing to the canvas
+
+    // SCALES
+
+    // Create the scaling for the x axis
+    const xScale = d3.scaleLinear()
+      .domain([0, data.length - 1])
+      .range([0, width]);
+
+    // Create the scaling for the y axis
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(data)])
+      .range([height, 0]);
+
+    // AXIS
+
+    // Create the x axis
+    svg.append('g')
+      .attr('class', 'xAxis')
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(xScale)
+        .ticks(data.length)
+      );
+
+    // Create the y axis
+    svg.append('g')
+      .attr('class', 'yAxis')
+      .call(d3.axisLeft(yScale));
+
+    // Add text to the x axis
+    svg.append('text')
+      .attr('text-anchor', 'end')
+      .attr('x', width)
+      .attr('y', height + margin.top + 20)
+      .text('X Axis');
+
+    // Add text to the y axis
+    svg.append('text')
+      .attr('text-anchor', 'end')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', -margin.left + 20)
+      .attr('x', -margin.top)
+      .text('Y Axis');
+
+    // LINE & DOTS
+
+    // Create the line generator for drawing
     const line = d3.line()
-      .x((d, i) => xScale(i)) // Position on the x axis according to array index
-      .y(d => yScale(d)) // Position on the y axis according to the data value
-      .curve(d3.curveMonotoneX); // Apply a curve algorithm for drawing the line
+      .x((d, i) => xScale(i))
+      .y(d => yScale(d))
+      .curve(d3.curveMonotoneX);
 
-    // Draw the line on the canvas
+    // Create the line from the data
     svg.append('path')
-      .datum(data) // Apply the dataset to the line
-      .attr('class', 'line') // Add a class to select the line later
-      .attr('d', line) // Apply the line generator to the data
-      .attr('fill', 'none') // Don't colour the space under/above the line
-      .attr('stroke', 'black') // Set the colour of the line
-      .attr('stroke-width', 3.0); // Set how thick the drawn line should be
+      .datum(data)
+      .attr('class', 'line')
+      .attr('d', line)
+      .attr('fill', 'none')
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3.0);
 
-    // Add dots at each data point on the line
+    // Draw circles at each data point
     svg.selectAll('circle')
-      .data(data) // Apply the dataset
-      .enter() // Add new data points
-      .append('circle') // Add a circle for each data point
-        .attr('cx', (d, i) => xScale(i)) // Position on the x axis according to the array index
-        .attr('cy', d => yScale(d)) // Position on the y axis according to the data value
-        .attr('r', 5); // Set the radius of the circle
+      .data(data)
+      .enter()
+      .append('circle')
+        .attr('cx', (d, i) => xScale(i))
+        .attr('cy', d => yScale(d))
+        .attr('r', 5);
   };
 
-  // Used to update the line and circles
+  // Used to update the lines and circles
   const update = data => {
-    const svg = d3.select('#lines').select('g');
+    const svg = d3.select('#lines-graph').select('g');
+
+    // SCALES
 
     // Update the x scale with the new data set
     const xScale = d3.scaleLinear()
@@ -69,6 +105,25 @@ const Lines = () => {
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
       .range([height, 0]);
+
+    // AXIS
+
+    // Update the x axis with the new scaling
+    svg.select('.xAxis')
+      .transition() // Start a transition
+      .duration(1000) // Moves with the line moving to the bottom of the graph
+      .call(d3.axisBottom(xScale) // Update the scaling
+        .ticks(data.length) // Update the number of ticks to draw
+      );
+
+    // Update the y axis with the new scaling
+    svg.select('.yAxis')
+      .transition() // Start a transition
+      .duration(2000) // Moves with the line moving up from the bottom of the graph
+      .delay(1500)
+      .call(d3.axisLeft(yScale)); // Update the scaling
+
+    // LINE & DOTS
 
     // Create the line generator
     const line = d3.line()
@@ -91,7 +146,7 @@ const Lines = () => {
       .transition() // Start a transition
       .duration(2000)
       .delay(500)
-      .attr('d', line); // Apply the line generator to the new data
+      .attr('d', line); // Move the line up to its new position
 
     // Handle removal of circles for excess data points
     svg.selectAll('circle')
@@ -124,7 +179,7 @@ const Lines = () => {
         .attr('r', 5) // Set the radius of the circle
         .transition() // Start a transition
         .duration(2000)
-        .delay(1500) // Start after the existing line has moved to the bottom of the graph
+        .delay(1500)
         .attr('cy', d => yScale(d)); // Set the y position according to the data value
   };
 
@@ -138,7 +193,7 @@ const Lines = () => {
     update([5, 7, 2, 6, 9]);
   }, 5000);
 
-  return <svg id="lines" />
+  return <svg id="lines-graph" />
 };
 
-export default Lines;
+export default Graph;
