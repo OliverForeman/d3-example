@@ -6,8 +6,9 @@ const BarsStatic = () => {
     drawGraph();
   });
 
-  const width = 960;
-  const height = 500;
+  const margin = { top: 20, right: 20, bottom: 40, left: 60 };
+  const width = 960 - margin.left - margin.right;
+  const height = 500 - margin.top - margin.bottom;
 
   // Does the initial drawing of the graph
   const drawGraph = () => {
@@ -15,8 +16,8 @@ const BarsStatic = () => {
     
     // Create a colour scale to use for the bars
     const colour = d3.scaleLinear()
-    .domain([1, d3.max(data)])
-    .range(['orange', 'purple']);
+      .domain([1, d3.max(data)])
+      .range(['orange', 'purple']);
 
     // Create a scaling for the x axis
     const xScale = d3.scaleBand()
@@ -27,12 +28,14 @@ const BarsStatic = () => {
     // Create a scaling for the y axis
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
-      .range([height, 50]);
+      .range([height, 0]);
 
     // Setup the canvas
     const svg = d3.select('#bars-static')
-      .attr('width', width)
-      .attr('height', height);
+      .attr('width', width + margin.left + margin.right)
+      .attr('height', height + margin.top + margin.bottom)
+      .append('g')
+        .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
     // Draw initial bars
     svg.selectAll('rect')

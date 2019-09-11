@@ -23,18 +23,20 @@ const AxisStatic = () => {
 
     // Creating the scaling for the x axis
     const xScale = d3.scaleLinear()
-      .domain([0, 100]) // The range for the values to be written on the axis (0 to 100)
+      .domain([0, 6]) // The range for the values to be written on the axis (0 to 6)
       .range([0, width]); // The positioning of the axis (0 to width in px)
 
     // Creating the scaling for the y axis
     const yScale = d3.scaleLinear()
-      .domain([0, 100]) // The range for the values to be written on the axis (0 to 100)
+      .domain([0, 12]) // The range for the values to be written on the axis (0 to 12)
       .range([height, 0]); // The positioning of the axis (height to 0 in px), reversed as drawing starts at the top left
 
     // Create the x axis
     svg.append('g')
       .attr('transform', `translate(0, ${height})`) // Positioning of the axis
-      .call(d3.axisBottom(xScale)); // Draw a bottom axis using our scaling 
+      .call(d3.axisBottom(xScale) // Draw a bottom axis using our scaling
+        .ticks(6) // Set the approximate number of ticks to draw on the axis
+      );
 
     // Create the y axis
     svg.append('g')
