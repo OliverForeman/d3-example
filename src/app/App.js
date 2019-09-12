@@ -16,8 +16,10 @@ const App = () => {
     }
   };
 
+  const getButtonClassName = graphType => `display-control-button main-chart-control${graphType === selectedOption ? ' selected' : ''}`;
+
   const createOptionButton = graphType => (
-    <button key={graphType} type="button" value={graphType} onClick={() => setSelectedOption(graphType)}>{kebabToWords(graphType)}</button>
+    <button key={graphType} type="button" className={getButtonClassName(graphType)} value={graphType} onClick={() => setSelectedOption(graphType)}>{kebabToWords(graphType)}</button>
   );
 
   return (

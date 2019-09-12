@@ -14,8 +14,10 @@ const BarChartController = () => {
   const [selectedOption, setSelectedOption] = useState(graphTypes[0]);
   const [data, setData] = useState([]);
 
+  const getButtonClassName = graphType => `display-control-button${graphType === selectedOption ? ' selected' : ''}`;
+
   const createOptionButton = graphType => (
-    <button key={graphType} type="button" value={graphType} onClick={() => setSelectedOption(graphType)}>{kebabToWords(graphType)}</button>
+    <button key={graphType} type="button" className={getButtonClassName(graphType)} value={graphType} onClick={() => setSelectedOption(graphType)}>{kebabToWords(graphType)}</button>
   );
 
   const getComponent = () => {
