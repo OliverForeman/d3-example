@@ -10,6 +10,8 @@ const Graph = () => {
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
+  let oldScale; // Used to animate the line transitions
+
   // Used to draw the initial graph
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
@@ -27,6 +29,8 @@ const Graph = () => {
     const xScale = d3.scaleLinear()
       .domain([0, data.length - 1])
       .range([0, width]);
+
+    oldScale = xScale; // Update the last used scale reference
 
     // Create the scaling for the y axis
     const yScale = d3.scaleLinear()
@@ -112,6 +116,7 @@ const Graph = () => {
     svg.select('.xAxis')
       .transition() // Start a transition
       .duration(1000) // Moves with the line moving to the bottom of the graph
+      .delay(500)
       .call(d3.axisBottom(xScale) // Update the scaling
         .ticks(data.length) // Update the number of ticks to draw
       );
@@ -120,7 +125,7 @@ const Graph = () => {
     svg.select('.yAxis')
       .transition() // Start a transition
       .duration(2000) // Moves with the line moving up from the bottom of the graph
-      .delay(1500)
+      .delay(2000)
       .call(d3.axisLeft(yScale)); // Update the scaling
 
     // LINE & DOTS
@@ -131,22 +136,33 @@ const Graph = () => {
       .y(d => yScale(d))
       .curve(d3.curveMonotoneX);
 
-    // Create a line generator to move the line to the bottom of the graph
-    const lineFlat = d3.line()
+    // Create a line generator for the last used scaling to move the line to the bottom of the graph
+    const lineFlatOldScale = d3.line()
+      .x((d, i) => oldScale(i))
+      .y(height)
+      .curve(d3.curveMonotoneX);
+
+    // Create a line generator for the new scaling to draw the line at the bottom of the graph
+    const lineFlatNewScale = d3.line()
       .x((d, i) => xScale(i))
       .y(height)
       .curve(d3.curveMonotoneX);
 
     // Handle the update of the line
     svg.select('.line')
-      .datum(data) // Apply the new data set
-      .transition() // Start a transition
+      .transition() // Move the line to the bottom of the graph
       .duration(1000)
-      .attr('d', lineFlat) // Move the line to the bottom of the graph
-      .transition() // Start a transition
+      .attr('d', lineFlatOldScale) // Uses the old scaling to move the current line without resizing on the axis
+      .selection() // Returns the line selection so the data can be updated
+      .datum(data) // Apply the new data set
+      .transition() // Keep the line flat but now scaled to the new axis
+      .duration(0) // Happens instantly, transition is used to apply delay
+      .delay(1000)
+      .attr('d', lineFlatNewScale) // Uses the new scaling to keep the line flat but rescaled
+      .transition() // Move the line up to the new data positions
       .duration(2000)
-      .delay(500)
-      .attr('d', line); // Move the line up to its new position
+      .delay(1000)
+      .attr('d', line); // Uses the new scaling to move the line up to its final position
 
     // Handle removal of circles for excess data points
     svg.selectAll('circle')
@@ -160,13 +176,22 @@ const Graph = () => {
     // Handle the update of existing data points
     svg.selectAll('circle')
       .data(data) // Apply the new data set
-      .transition() // Start a transition
-      .duration(1000)
+      .transition() // Reduces radius so the data points disappear
+      .duration(750)
+      .attr('r', 0) // Sets the radius to 0 so the circles appear invisible
+      .selection() // Returns the selection to escape timing delay behind the last transition
+      .transition() // Moves the circles to the correct position on the x axis
+      .duration(0) // Happens instantly, transition is used to apply delay
+      .delay(750)
       .attr('cx', (d, i) => xScale(i)) // Set the x position according to the array index
-      .attr('cy', height) // Set the y position to the bottom of the graph
-      .transition() // Start a transition
+      .attr('cy', height) // Set the height to the bottom of the graph
+      .transition() // Increase the radius so the points appear
+      .duration(750)
+      .delay(250)
+      .attr('r', 5) // Sets the radius to 5 so the circles can be seen again
+      .transition() // Moves the circles up with the line
       .duration(2000)
-      .delay(500)
+      .delay(250)
       .attr('cy', d => yScale(d)); // Set the y position according to the data value
 
     // Handle the adding of new data points
@@ -176,11 +201,17 @@ const Graph = () => {
       .append('circle') // Add a new circle for each new data point
         .attr('cx', (d, i) => xScale(i)) // Set the x position according to the array index
         .attr('cy', height) // Set the y position to the bottom of the graph
-        .attr('r', 5) // Set the radius of the circle
-        .transition() // Start a transition
+        .attr('r', 0) // Set the radius of the circle to 0 so it can't be seen
+        .transition() // Make the circles visible
+        .duration(750)
+        .delay(1000)
+        .attr('r', 5) // Sets the radius to 5 so the circles are visible
+        .transition() // Move the circles up with the line
         .duration(2000)
-        .delay(1500)
+        .delay(250)
         .attr('cy', d => yScale(d)); // Set the y position according to the data value
+
+    oldScale = xScale; // Update the last used scale reference
   };
 
   // Update data set after 1 second, increases the data points
@@ -191,7 +222,7 @@ const Graph = () => {
   // Update data set after 4 seconds, 3 seconds after first update, reduces data points
   setTimeout(() => {
     update([5, 7, 2, 6, 9]);
-  }, 5000);
+  }, 5500);
 
   return <svg id="lines-graph" />
 };

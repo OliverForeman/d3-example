@@ -92,7 +92,7 @@ const Lines = () => {
       .y(height)
       .curve(d3.curveMonotoneX);
 
-    // Update the line
+    // Handle the update the line
     svg.select('.line')
       .transition() // Move the line to the bottom of the graph
       .duration(1000)
