@@ -17,21 +17,13 @@ const GraphInteractive = ({ data }) => {
   const height = 500 - margin.top - margin.bottom;
 
   const drawGraph = () => {
-    const svg = d3.select('#graph-interactive')
+    const svg = d3.select('#bars-graph-interactive')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const colour = d3.scaleLinear()
-      .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
-
-    const xScaleAxis = d3.scaleLinear()
-      .domain([0, data.length])
-      .range([0, width]);
-
-    const xScaleBars = d3.scaleBand()
+    const xScale = d3.scaleBand()
       .domain(d3.range(data.length))
       .range([0, width])
       .paddingInner(0.05)
@@ -44,7 +36,7 @@ const GraphInteractive = ({ data }) => {
     svg.append('g')
       .attr('class', 'xAxis')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScaleAxis)
+      .call(d3.axisBottom(xScale)
         .ticks(data.length)
       );
 
@@ -64,30 +56,16 @@ const GraphInteractive = ({ data }) => {
       .attr('y', -margin.left + 20)
       .attr('x', -margin.top)
       .text('Y Axis');
-
-    svg.selectAll('rect')
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr('x', (d, i) => xScaleBars(i))
-      .attr('y', d => yScale(d))
-      .attr('width', xScaleBars.bandwidth())
-      .attr('height', d => height - yScale(d))
-      .attr('fill', d => colour(d));
   };
 
   const update = data => {
-    const svg = d3.select('#graph-interactive').select('g');
+    const svg = d3.select('#bars-graph-interactive').select('g');
 
     const colour = d3.scaleLinear()
       .domain([1, d3.max(data)])
       .range(['orange', 'purple']);
 
-    const xScaleAxis = d3.scaleLinear()
-      .domain([0, data.length])
-      .range([0, width]);
-
-    const xScaleBars = d3.scaleBand()
+    const xScale = d3.scaleBand()
       .domain(d3.range(data.length))
       .range([0, width])
       .paddingInner(0.05)
@@ -101,7 +79,7 @@ const GraphInteractive = ({ data }) => {
       .transition()
       .duration(750)
       .delay(500)
-      .call(d3.axisBottom(xScaleAxis)
+      .call(d3.axisBottom(xScale)
         .ticks(data.length)
       );
 
@@ -124,8 +102,8 @@ const GraphInteractive = ({ data }) => {
       .transition()
       .duration(750)
       .delay(500)
-      .attr('x', (d, i) => xScaleBars(i))
-      .attr('width', xScaleBars.bandwidth())
+      .attr('x', (d, i) => xScale(i))
+      .attr('width', xScale.bandwidth())
       .transition()
       .duration(750)
       .attr('y', d => yScale(d))
@@ -136,9 +114,9 @@ const GraphInteractive = ({ data }) => {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', (d, i) => xScaleBars(i))
+      .attr('x', (d, i) => xScale(i))
       .attr('y', height)
-      .attr('width', xScaleBars.bandwidth())
+      .attr('width', xScale.bandwidth())
       .transition()
       .duration(750)
       .delay(1250)
@@ -147,7 +125,7 @@ const GraphInteractive = ({ data }) => {
       .attr('fill', d => colour(d));
   };
 
-  return <svg id="graph-interactive" />
+  return <svg id="bars-graph-interactive" />
 };
 
 export default GraphInteractive;

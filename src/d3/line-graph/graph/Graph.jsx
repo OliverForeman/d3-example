@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
-const Lines = () => {
+const Graph = () => {
   useEffect(() => {
     drawGraph();
   });
@@ -10,59 +10,95 @@ const Lines = () => {
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
-  let oldScale; // Holds the last used scaling to animate the line transitions
+  let oldScale; // Used to animate the line transitions
 
   // Used to draw the initial graph
   const drawGraph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
-    // Create the scaling for the x axis
-    const xScale = d3.scaleLinear()
-      .domain([0, data.length - 1]) // The range of values to be used for the scale
-      .range([0, width]); // The positioning for the scale to range over
-
-    oldScale = xScale; // Set the first scaling as the last used
-
-    // Create the scaling for the y axis
-    const yScale = d3.scaleLinear()
-      .domain([0, d3.max(data)]) // The range of values to be used for the scale
-      .range([height, 0]); // The positioning for the scale to range over (reversed to start at bottom-left)
-
     // Setup the canvas
-    const svg = d3.select('#lines')
+    const svg = d3.select('#lines-graph')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
-    
-    // Create a line generator for drawing to the canvas
+
+    // SCALES
+
+    // Create the scaling for the x axis
+    const xScale = d3.scaleLinear()
+      .domain([0, data.length - 1])
+      .range([0, width]);
+
+    oldScale = xScale; // Update the last used scale reference
+
+    // Create the scaling for the y axis
+    const yScale = d3.scaleLinear()
+      .domain([0, d3.max(data)])
+      .range([height, 0]);
+
+    // AXIS
+
+    // Create the x axis
+    svg.append('g')
+      .attr('class', 'xAxis')
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(xScale)
+        .ticks(data.length)
+      );
+
+    // Create the y axis
+    svg.append('g')
+      .attr('class', 'yAxis')
+      .call(d3.axisLeft(yScale));
+
+    // Add text to the x axis
+    svg.append('text')
+      .attr('text-anchor', 'end')
+      .attr('x', width)
+      .attr('y', height + margin.top + 20)
+      .text('X Axis');
+
+    // Add text to the y axis
+    svg.append('text')
+      .attr('text-anchor', 'end')
+      .attr('transform', 'rotate(-90)')
+      .attr('y', -margin.left + 20)
+      .attr('x', -margin.top)
+      .text('Y Axis');
+
+    // LINE & DOTS
+
+    // Create the line generator for drawing
     const line = d3.line()
-      .x((d, i) => xScale(i)) // Position on the x axis according to array index
-      .y(d => yScale(d)) // Position on the y axis according to the data value
-      .curve(d3.curveMonotoneX); // Apply a curve algorithm for drawing the line
+      .x((d, i) => xScale(i))
+      .y(d => yScale(d))
+      .curve(d3.curveMonotoneX);
 
-    // Draw the line on the canvas
+    // Create the line from the data
     svg.append('path')
-      .datum(data) // Apply the dataset to the line
-      .attr('class', 'line') // Add a class to select the line later
-      .attr('d', line) // Apply the line generator to the data
-      .attr('fill', 'none') // Don't colour the space under/above the line
-      .attr('stroke', 'black') // Set the colour of the line
-      .attr('stroke-width', 3.0); // Set how thick the drawn line should be
+      .datum(data)
+      .attr('class', 'line')
+      .attr('d', line)
+      .attr('fill', 'none')
+      .attr('stroke', 'black')
+      .attr('stroke-width', 3.0);
 
-    // Add dots at each data point on the line
+    // Draw circles at each data point
     svg.selectAll('circle')
-      .data(data) // Apply the dataset
-      .enter() // Add new data points
-      .append('circle') // Add a circle for each data point
-        .attr('cx', (d, i) => xScale(i)) // Position on the x axis according to the array index
-        .attr('cy', d => yScale(d)) // Position on the y axis according to the data value
-        .attr('r', 5); // Set the radius of the circle
+      .data(data)
+      .enter()
+      .append('circle')
+        .attr('cx', (d, i) => xScale(i))
+        .attr('cy', d => yScale(d))
+        .attr('r', 5);
   };
 
-  // Used to update the line and circles
+  // Used to update the lines and circles
   const update = data => {
-    const svg = d3.select('#lines').select('g');
+    const svg = d3.select('#lines-graph').select('g');
+
+    // SCALES
 
     // Update the x scale with the new data set
     const xScale = d3.scaleLinear()
@@ -74,7 +110,27 @@ const Lines = () => {
       .domain([0, d3.max(data)])
       .range([height, 0]);
 
-    // Create the line generator for the new scaling
+    // AXIS
+
+    // Update the x axis with the new scaling
+    svg.select('.xAxis')
+      .transition() // Start a transition
+      .duration(1000) // Moves with the line moving to the bottom of the graph
+      .delay(500)
+      .call(d3.axisBottom(xScale) // Update the scaling
+        .ticks(data.length) // Update the number of ticks to draw
+      );
+
+    // Update the y axis with the new scaling
+    svg.select('.yAxis')
+      .transition() // Start a transition
+      .duration(2000) // Moves with the line moving up from the bottom of the graph
+      .delay(2000)
+      .call(d3.axisLeft(yScale)); // Update the scaling
+
+    // LINE & DOTS
+
+    // Create the line generator
     const line = d3.line()
       .x((d, i) => xScale(i))
       .y(d => yScale(d))
@@ -86,13 +142,13 @@ const Lines = () => {
       .y(height)
       .curve(d3.curveMonotoneX);
 
-    // Create a line generator for the new scaling to draw it at the bottom of the graph
+    // Create a line generator for the new scaling to draw the line at the bottom of the graph
     const lineFlatNewScale = d3.line()
       .x((d, i) => xScale(i))
       .y(height)
       .curve(d3.curveMonotoneX);
 
-    // Handle the update the line
+    // Handle the update of the line
     svg.select('.line')
       .transition() // Move the line to the bottom of the graph
       .duration(1000)
@@ -120,20 +176,20 @@ const Lines = () => {
     // Handle the update of existing data points
     svg.selectAll('circle')
       .data(data) // Apply the new data set
-      .transition() // Reduce radius so the data points disappear
+      .transition() // Reduces radius so the data points disappear
       .duration(750)
       .attr('r', 0) // Sets the radius to 0 so the circles appear invisible
-      .selection() // Return the selection to escape timing delay behind the last transition
-      .transition() // Move the circles to the correct position on the x axis
+      .selection() // Returns the selection to escape timing delay behind the last transition
+      .transition() // Moves the circles to the correct position on the x axis
       .duration(0) // Happens instantly, transition is used to apply delay
       .delay(750)
       .attr('cx', (d, i) => xScale(i)) // Set the x position according to the array index
       .attr('cy', height) // Set the height to the bottom of the graph
-      .transition() // Increase the radius to the points appear
+      .transition() // Increase the radius so the points appear
       .duration(750)
       .delay(250)
       .attr('r', 5) // Sets the radius to 5 so the circles can be seen again
-      .transition() // Move the circles up with the line
+      .transition() // Moves the circles up with the line
       .duration(2000)
       .delay(250)
       .attr('cy', d => yScale(d)); // Set the y position according to the data value
@@ -155,7 +211,7 @@ const Lines = () => {
         .delay(250)
         .attr('cy', d => yScale(d)); // Set the y position according to the data value
 
-    oldScale = xScale; // Set the current scale as the last used scaling
+    oldScale = xScale; // Update the last used scale reference
   };
 
   // Update data set after 1 second, increases the data points
@@ -163,12 +219,12 @@ const Lines = () => {
     update([10, 2, 7, 4, 50, 20, 42, 24, 6, 4, 36, 8]);
   }, 1000);
 
-  // Update data set after 5.5 seconds, decreases the data points
+  // Update data set after 4 seconds, 3 seconds after first update, reduces data points
   setTimeout(() => {
     update([5, 7, 2, 6, 9]);
   }, 5500);
 
-  return <svg id="lines" />
+  return <svg id="lines-graph" />
 };
 
-export default Lines;
+export default Graph;

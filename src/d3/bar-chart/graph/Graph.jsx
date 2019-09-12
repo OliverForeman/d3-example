@@ -14,7 +14,7 @@ const Graph = () => {
     const data = [12, 5, 6, 6, 9, 10];
 
     // Select a translated graphics tag for drawing the elements within
-    const svg = d3.select('#graph')
+    const svg = d3.select('#bars-graph')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
@@ -28,12 +28,7 @@ const Graph = () => {
     // SCALES
 
     // Create a scaling for the x axis
-    const xScaleAxis = d3.scaleLinear()
-      .domain([0, data.length])
-      .range([0, width]);
-
-    // Create an x scaling for the bars to be drawn with
-    const xScaleBars = d3.scaleBand()
+    const xScale = d3.scaleBand()
       .domain(d3.range(data.length))
       .range([0, width])
       .paddingInner(0.05)
@@ -50,7 +45,7 @@ const Graph = () => {
     svg.append('g')
       .attr('class', 'xAxis') // Add a class so we can select it later
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScaleAxis)
+      .call(d3.axisBottom(xScale)
         .ticks(data.length) // Give the approximate number of ticks to be drawn
       );
 
@@ -81,16 +76,16 @@ const Graph = () => {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', (d, i) => xScaleBars(i))
+      .attr('x', (d, i) => xScale(i))
       .attr('y', d => yScale(d))
-      .attr('width', xScaleBars.bandwidth()) // Gives the bars an equal width
+      .attr('width', xScale.bandwidth()) // Gives the bars an equal width
       .attr('height', d => height - yScale(d))
       .attr('fill', d => colour(d)); // Set colour according to data value
   };
 
   // Used to update the entire bar chart
   const update = data => {
-    const svg = d3.select('#graph').select('g');
+    const svg = d3.select('#bars-graph').select('g');
 
     // Update the colour scale for the new data
     const colour = d3.scaleLinear()
@@ -100,12 +95,7 @@ const Graph = () => {
     // SCALES
 
     // Update the x axis scaling for the new data
-    const xScaleAxis = d3.scaleLinear()
-      .domain([0, data.length])
-      .range([0, width]);
-
-    // Update the x scaling for the bars for the new data
-    const xScaleBars = d3.scaleBand()
+    const xScale = d3.scaleBand()
       .domain(d3.range(data.length))
       .range([0, width])
       .paddingInner(0.05)
@@ -123,7 +113,7 @@ const Graph = () => {
       .transition() // Start a transition for the given duration
       .duration(750)
       .delay(500)
-      .call(d3.axisBottom(xScaleAxis) // Draw with the new scaling
+      .call(d3.axisBottom(xScale) // Draw with the new scaling
         .ticks(data.length) // Update the number of ticks to display
       );
 
@@ -151,8 +141,8 @@ const Graph = () => {
       .transition() // Start another transition for the given duration, starting after the delay
       .duration(750)
       .delay(500)
-      .attr('x', (d, i) => xScaleBars(i))
-      .attr('width', xScaleBars.bandwidth())
+      .attr('x', (d, i) => xScale(i))
+      .attr('width', xScale.bandwidth())
       .transition() // Start a transition for the given duration
       .duration(750)
       .attr('y', d => yScale(d))
@@ -164,9 +154,9 @@ const Graph = () => {
       .data(data) // Apply the new dataset
       .enter() // Start handling the new data points
       .append('rect') // Add new rect elements for the new data values
-      .attr('x', (d, i) => xScaleBars(i))
+      .attr('x', (d, i) => xScale(i))
       .attr('y', height)
-      .attr('width', xScaleBars.bandwidth())
+      .attr('width', xScale.bandwidth())
       .transition()
       .duration(750)
       .delay(1250)
@@ -185,7 +175,7 @@ const Graph = () => {
     update([5, 7, 2, 6, 9]);
   }, 4000);
 
-  return <svg id="graph" />
+  return <svg id="bars-graph" />
 };
 
 export default Graph;
