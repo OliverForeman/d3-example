@@ -23,9 +23,11 @@ const GraphInteractive = ({ data }) => {
       .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const xScaleAxis = d3.scaleLinear()
-      .domain([0, data.length])
-      .range([0, width]);
+    const xScale = d3.scaleBand()
+      .domain(d3.range(data.length))
+      .range([0, width])
+      .paddingInner(0.05)
+      .paddingOuter(0.05);
 
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
@@ -34,7 +36,7 @@ const GraphInteractive = ({ data }) => {
     svg.append('g')
       .attr('class', 'xAxis')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScaleAxis)
+      .call(d3.axisBottom(xScale)
         .ticks(data.length)
       );
 
@@ -63,11 +65,7 @@ const GraphInteractive = ({ data }) => {
       .domain([1, d3.max(data)])
       .range(['orange', 'purple']);
 
-    const xScaleAxis = d3.scaleLinear()
-      .domain([0, data.length])
-      .range([0, width]);
-
-    const xScaleBars = d3.scaleBand()
+    const xScale = d3.scaleBand()
       .domain(d3.range(data.length))
       .range([0, width])
       .paddingInner(0.05)
@@ -81,7 +79,7 @@ const GraphInteractive = ({ data }) => {
       .transition()
       .duration(750)
       .delay(500)
-      .call(d3.axisBottom(xScaleAxis)
+      .call(d3.axisBottom(xScale)
         .ticks(data.length)
       );
 
@@ -104,8 +102,8 @@ const GraphInteractive = ({ data }) => {
       .transition()
       .duration(750)
       .delay(500)
-      .attr('x', (d, i) => xScaleBars(i))
-      .attr('width', xScaleBars.bandwidth())
+      .attr('x', (d, i) => xScale(i))
+      .attr('width', xScale.bandwidth())
       .transition()
       .duration(750)
       .attr('y', d => yScale(d))
@@ -116,9 +114,9 @@ const GraphInteractive = ({ data }) => {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', (d, i) => xScaleBars(i))
+      .attr('x', (d, i) => xScale(i))
       .attr('y', height)
-      .attr('width', xScaleBars.bandwidth())
+      .attr('width', xScale.bandwidth())
       .transition()
       .duration(750)
       .delay(1250)

@@ -28,12 +28,7 @@ const GraphStatic = () => {
     // SCALES
 
     // Create a scaling for the x axis
-    const xScaleAxis = d3.scaleLinear()
-      .domain([0, data.length])
-      .range([0, width]);
-
-    // Create an x scaling for the bars to be drawn with
-    const xScaleBars = d3.scaleBand()
+    const xScale = d3.scaleBand()
       .domain(d3.range(data.length))
       .range([0, width])
       .paddingInner(0.05)
@@ -49,7 +44,7 @@ const GraphStatic = () => {
     // Create the x axis
     svg.append('g')
       .attr('transform', `translate(0, ${height})`)
-      .call(d3.axisBottom(xScaleAxis)
+      .call(d3.axisBottom(xScale)
         .ticks(data.length) // Give the approximate number of ticks to be drawn
       );
 
@@ -79,9 +74,9 @@ const GraphStatic = () => {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', (d, i) => xScaleBars(i))
+      .attr('x', (d, i) => xScale(i))
       .attr('y', d => yScale(d))
-      .attr('width', xScaleBars.bandwidth()) // Gives all bars an equal width
+      .attr('width', xScale.bandwidth()) // Gives all bars an equal width
       .attr('height', d => height - yScale(d))
       .attr('fill', d => colour(d)); // Set colour according to data value
   };
