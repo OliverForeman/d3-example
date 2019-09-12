@@ -23,19 +23,9 @@ const GraphInteractive = ({ data }) => {
       .append('g')
         .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const colour = d3.scaleLinear()
-      .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
-
     const xScaleAxis = d3.scaleLinear()
       .domain([0, data.length])
       .range([0, width]);
-
-    const xScaleBars = d3.scaleBand()
-      .domain(d3.range(data.length))
-      .range([0, width])
-      .paddingInner(0.05)
-      .paddingOuter(0.05);
 
     const yScale = d3.scaleLinear()
       .domain([0, d3.max(data)])
@@ -64,16 +54,6 @@ const GraphInteractive = ({ data }) => {
       .attr('y', -margin.left + 20)
       .attr('x', -margin.top)
       .text('Y Axis');
-
-    svg.selectAll('rect')
-      .data(data)
-      .enter()
-      .append('rect')
-      .attr('x', (d, i) => xScaleBars(i))
-      .attr('y', d => yScale(d))
-      .attr('width', xScaleBars.bandwidth())
-      .attr('height', d => height - yScale(d))
-      .attr('fill', d => colour(d));
   };
 
   const update = data => {
