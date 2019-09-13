@@ -3,15 +3,17 @@ import './App.css';
 import kebabToWords from '../utilities/kebabToWords';
 import BarChartController from '../controllers/BarChartController';
 import LineGraphController from '../controllers/LineGraphController';
+import PieChartController from '../controllers/PieChartController';
 
 const App = () => {
-  const graphTypes = ['bar-chart', 'line-graph'];
+  const graphTypes = ['bar-chart', 'line-graph', 'pie-chart'];
   const [selectedOption, setSelectedOption] = useState(graphTypes[0]);
 
   const getComponent = () => {
     switch (selectedOption) {
       case 'bar-chart': return <BarChartController />;
       case 'line-graph': return <LineGraphController />;
+      case 'pie-chart': return <PieChartController />;
       default: return <BarChartController />;
     }
   };
