@@ -6,7 +6,15 @@ import * as d3 from 'd3';
 const Axis = () => {
   useEffect(() => {
     drawGraph();
+
+    return () => {
+      if (interval) clearInterval(interval);
+      timers.forEach(timer => clearTimeout(timer));
+    };
   });
+
+  // Stores timeout IDs to be cleared on component unmount
+  const timers = [];
 
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 960 - margin.left - margin.right;
@@ -91,15 +99,38 @@ const Axis = () => {
       .call(d3.axisLeft(yScale)); // Draw the axis according to the updated scaling
   };
 
-  // Updata data set after 1 second, increases data points
-  setTimeout(() => {
+  // Update the data set, increases data points
+  timers.unshift(setTimeout(() => {
+    timers.pop();
     update([10, 2, 7, 4, 50, 20, 42, 24, 6, 4, 36, 8]);
-  }, 1000);
+  }, 1000));
 
-  // Update data set after 4 seconds, 3 seconds after first update, reduces data points
-  setTimeout(() => {
+  // Update the data set, reduces data points
+  timers.unshift(setTimeout(() => {
+    timers.pop();
     update([5, 7, 2, 6, 9]);
-  }, 4000);
+  }, 4000));
+
+  // Return to the original data set, increases data points
+  timers.unshift(setTimeout(() => {
+    timers.pop();
+    update([12, 5, 6, 6, 9, 10]);
+  }, 7000));
+
+  // Runs the animation on a loop
+  const interval = setInterval(() => {
+    update([10, 2, 7, 4, 50, 20, 42, 24, 6, 4, 36, 8]);
+
+    timers.unshift(setTimeout(() => {
+      timers.pop();
+      update([5, 7, 2, 6, 9]);
+    }, 3000));
+
+    timers.unshift(setTimeout(() => {
+      timers.pop();
+      update([12, 5, 6, 6, 9, 10]);
+    }, 6000));
+  }, 9000);
 
   return <svg id="axis" />
 };

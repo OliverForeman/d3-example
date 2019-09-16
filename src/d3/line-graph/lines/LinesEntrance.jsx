@@ -4,6 +4,10 @@ import * as d3 from 'd3';
 const LinesEntrance = () => {
   useEffect(() => {
     drawGraph();
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
   });
 
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
@@ -63,6 +67,31 @@ const LinesEntrance = () => {
       .delay(1000) // Run after the circles have finished animating
       .attr('stroke-dashoffset', 0); // Reduce the offset to 0 so that the line dash becomes totally visible
   };
+
+  // Used to loop the animation
+  const update = () => {
+    const svg = d3.select('#lines-entrance').select('g');
+
+    // Make the circles disappear and reappear again
+    svg.selectAll('circle')
+      .attr('r', 0) // No radius so the circles can't be seen
+      .transition()
+      .duration(1000)
+      .attr('r', 5); // Increase the radius again to make the circles visible
+
+    // Make the line disappear and reappear again
+    svg.select('.line')
+      .attr('stroke-dashoffset', svg.select('.line').node().getTotalLength()) // Increase stroke offset so the line disappears
+      .transition()
+      .duration(2000)
+      .delay(1000)
+      .attr('stroke-dashoffset', 0); // Reduce the stroke offset again so the line reappears
+  };
+
+  // Loops the animation
+  const interval = setInterval(() => {
+    update();
+  }, 3750);
 
   return <svg id="lines-entrance" />
 };
