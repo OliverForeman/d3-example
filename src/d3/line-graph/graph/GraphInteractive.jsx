@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import * as d3 from 'd3';
+import arrayEquals from '../../../utilities/arrayEquals';
 
 const GraphInteractive = ({ data }) => {
+  const [oldScale, setOldScale] = useState();
+  const [oldData, setOldData] = useState([]);
+
   useEffect(() => {
     drawGraph();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    update(data);
+    if (!arrayEquals(data, oldData)) {
+      setOldData(data);
+      update(data);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
-
-  const [oldScale, setOldScale] = useState();
 
   const drawGraph = () => {
     const svg = d3.select('#lines-graph-interactive')
