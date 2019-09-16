@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import arrayEquals from '../../../utilities/arrayEquals';
 
 const GraphInteractive = ({ data }) => {
-  const [oldScale, setOldScale] = useState();
+  const [oldScale, setOldScale] = useState(() => () => null);
   const [oldData, setOldData] = useState([]);
 
   useEffect(() => {
