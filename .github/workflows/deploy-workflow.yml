@@ -20,11 +20,10 @@ jobs:
       run: npm run predeploy
     - name: deploy
       env:
-        email: ${{ secrets.EMAIL }}
-        username: ${{ secrets.NAME }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        EMAIL: ${{ secrets.EMAIL }}
+        USERNAME: ${{ secrets.NAME }}
       run: |
-        echo '$email'
-        echo "$username"
-        git config user.email $email
-        git config user.name $username
+        git config user.email $EMAIL
+        git config user.name $USERNAME
         npm run deploy
