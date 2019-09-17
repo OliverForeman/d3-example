@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+      - gh-actions-deploy
 
 jobs:
   predeploy_and_deploy:
