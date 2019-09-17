@@ -23,8 +23,8 @@ jobs:
         email: ${{ secrets.EMAIL }}
         username: ${{ secrets.NAME }}
       run: |
-        echo $email
-        echo $username
+        echo '$email'
+        echo "$username"
         git config user.email $email
         git config user.name $username
         npm run deploy
