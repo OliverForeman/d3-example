@@ -19,4 +19,6 @@ jobs:
     - name: predeploy
       run: npm run predeploy
     - name: deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: npm run deploy
