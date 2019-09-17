@@ -19,7 +19,7 @@ jobs:
     - name: predeploy
       run: npm run predeploy
     - name: deploy
-      with:
+      env:
         email: ${{ secrets.EMAIL }}
         username: ${{ secrets.NAME }}
       run: |
