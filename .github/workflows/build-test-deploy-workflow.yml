@@ -1,0 +1,40 @@
+name: Build and Test
+
+on: [push]
+
+jobs:
+  build_and_test:
+    name: Build and Test on node ${{ matrix.node-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install
+      run: npm install
+    - name: npm build
+      run: npm run build --if-present
+    - name: npm test
+      run: npm run test-ci
+
+  predeploy_and_deploy:
+    name: Predeploy and deploy build
+    needs: build_and_test
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: npm install
+      run: npm install
+    - name: predeploy
+      run: npm run predeploy
+    - name: deploy
+      run: echo "Need to authenticate for deployment"
