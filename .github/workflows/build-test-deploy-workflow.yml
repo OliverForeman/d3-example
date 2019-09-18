@@ -25,7 +25,7 @@ jobs:
   predeploy_and_deploy:
     name: Predeploy and deploy build
     needs: build_and_test
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/gh-actions-deploy'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -37,4 +37,6 @@ jobs:
     - name: predeploy
       run: npm run predeploy
     - name: deploy
-      run: echo "Requires GitHub auth to deploy"
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      run: npm run deploy
