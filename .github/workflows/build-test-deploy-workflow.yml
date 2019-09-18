@@ -39,4 +39,7 @@ jobs:
     - name: deploy
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      run: npm run deploy
+      run: |
+        git config user.email "oliverforeman@btinternet.com"
+        git config user.name "OliverForeman"
+        npm run deploy
