@@ -25,7 +25,8 @@ const PieStatic = () => {
       .range(['orange', 'purple']);
 
     const pie = d3.pie()
-      .value(d => d);
+      .value(d => d)
+      .sort(null);
     
     const dataReady = pie(data);
 
@@ -33,14 +34,14 @@ const PieStatic = () => {
       .data(dataReady)
       .enter()
       .append('path')
-      .attr('d', d3.arc()
-        .innerRadius(0)
-        .outerRadius(radius)
-      )
-      .attr('fill', d => colour(d.value))
-      .attr('stroke', 'black')
-      .style('stroke-width', '2px')
-      .style('opacity', 0.7);
+        .attr('d', d3.arc()
+          .innerRadius(0)
+          .outerRadius(radius)
+        )
+        .attr('fill', d => colour(d.value))
+        .attr('stroke', 'black')
+        .style('stroke-width', '2px')
+        .style('opacity', 0.7);
   };
 
   return <svg id="pie-static" />
