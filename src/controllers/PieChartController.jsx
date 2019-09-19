@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import kebabToWords from '../utilities/kebabToWords';
 import PieStatic from '../d3/pie-chart/PieStatic';
+import Pie from '../d3/pie-chart/Pie';
 
 const PieChartController = () => {
-  const graphTypes = ['pie-static'];
+  const graphTypes = ['pie-static', 'pie-animated'];
   const [selectedOption, setSelectedOption] = useState(graphTypes[0]);
 
   const getButtonClassName = graphType => `display-control-button${graphType === selectedOption ? ' selected': ''}`;
@@ -15,6 +16,7 @@ const PieChartController = () => {
   const getComponent = () => {
     switch (selectedOption) {
       case 'pie-static': return <PieStatic />;
+      case 'pie-animated': return <Pie />;
       default: return <PieStatic />;
     }
   };
