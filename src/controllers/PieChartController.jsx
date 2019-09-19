@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import kebabToWords from '../utilities/kebabToWords';
 import PieStatic from '../d3/pie-chart/PieStatic';
 import Pie from '../d3/pie-chart/Pie';
+import PieInteractive from '../d3/pie-chart/PieInteractive';
+import DisplayInteractions from '../reusable/DisplayInteractions';
 
 const PieChartController = () => {
-  const graphTypes = ['pie-static', 'pie-animated'];
+  const graphTypes = ['pie-static', 'pie-animated', 'pie-interactive'];
   const [selectedOption, setSelectedOption] = useState(graphTypes[0]);
+  const [data, setData] = useState([]);
 
   const getButtonClassName = graphType => `display-control-button${graphType === selectedOption ? ' selected': ''}`;
 
@@ -17,6 +20,7 @@ const PieChartController = () => {
     switch (selectedOption) {
       case 'pie-static': return <PieStatic />;
       case 'pie-animated': return <Pie />;
+      case 'pie-interactive': return <PieInteractive data={data} />;
       default: return <PieStatic />;
     }
   };
@@ -31,6 +35,7 @@ const PieChartController = () => {
         {getComponent()}
       </div>
       <hr />
+      <DisplayInteractions shouldDisplay={selectedOption === 'pie-interactive'} data={data} setData={setData} />
     </>
   );
 };
