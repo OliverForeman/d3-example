@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import kebabToWords from '../utilities/kebabToWords';
-import PieStatic from '../d3/pie-chart/PieStatic';
-import Pie from '../d3/pie-chart/Pie';
-import PieInteractive from '../d3/pie-chart/PieInteractive';
+import PieStatic from '../d3/pie-chart/pies/PieStatic';
+import Pie from '../d3/pie-chart/pies/Pie';
+import PieInteractive from '../d3/pie-chart/pies/PieInteractive';
 import DisplayInteractions from '../reusable/DisplayInteractions';
 
 const PieChartController = () => {
