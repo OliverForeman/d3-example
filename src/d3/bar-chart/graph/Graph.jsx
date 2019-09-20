@@ -31,7 +31,7 @@ const Graph = () => {
     // Create a colour scale for the bars
     const colour = d3.scaleLinear()
       .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
+      .range(['#d1e2f3', '#023858']);
 
     // SCALES
 
@@ -98,7 +98,7 @@ const Graph = () => {
     // Update the colour scale for the new data
     const colour = d3.scaleLinear()
       .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
+      .range(['#d1e2f3', '#023858']);
 
     // SCALES
 

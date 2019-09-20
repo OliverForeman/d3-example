@@ -22,7 +22,7 @@ const PieStatic = () => {
 
     const colour = d3.scaleLinear()
       .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
+      .range(['#d1e2f3', '#023858']);
 
     const pie = d3.pie()
       .value(d => d)

@@ -53,7 +53,7 @@ const PieInteractive = ({ data }) => {
 
     const colour = d3.scaleLinear()
       .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
+      .range(['#d1e2f3', '#023858']);
 
     const dataReady = pie(data);
 
@@ -63,7 +63,7 @@ const PieInteractive = ({ data }) => {
       .transition()
       .duration(2000)
       .attrTween('d', arcTweenRemove)
-      .attr('fill', 'orange')
+      .attr('fill', '#d1e2f3')
       .remove();
 
     svg.selectAll('.slice')
@@ -82,7 +82,7 @@ const PieInteractive = ({ data }) => {
           currentAngles[d.index] = Object.assign({}, d, { startAngle: graphEnd, endAngle: graphEnd });
           return arc(currentAngles[d.index]);
         })
-        .attr('fill', 'orange')
+        .attr('fill', '#d1e2f3')
         .attr('stroke', 'black')
         .style('stroke-width', '2px')
         .style('opacity', 0.7)

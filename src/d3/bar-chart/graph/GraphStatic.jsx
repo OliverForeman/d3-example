@@ -16,7 +16,7 @@ const GraphStatic = () => {
     // Create a colour scale for the bars
     const colour = d3.scaleLinear()
       .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
+      .range(['#d1e2f3', '#023858']);
 
     // Select a translated graphics tag for drawing the elements within
     const svg = d3.select('#bars-graph-static')
