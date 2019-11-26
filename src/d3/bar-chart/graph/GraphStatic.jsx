@@ -74,7 +74,7 @@ const GraphStatic = () => {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', (d, i) => xScale(i))
+      .attr('x', (_, i) => xScale(i))
       .attr('y', d => yScale(d))
       .attr('width', xScale.bandwidth()) // Gives all bars an equal width
       .attr('height', d => height - yScale(d))

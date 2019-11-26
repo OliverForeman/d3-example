@@ -42,7 +42,7 @@ const BarsStatic = () => {
       .data(data) // The starting data set
       .enter() // Start adding new data points for any not currently mapped
       .append('rect') // Append a rect element (a bar for the chart)
-      .attr('x', (d, i) => xScale(i)) // Position on the x axis according to the scaling
+      .attr('x', (_, i) => xScale(i)) // Position on the x axis according to the scaling
       .attr('y', d => yScale(d)) // Position on the y axis according to the scaling
       .attr('width', xScale.bandwidth()) // Set the bar width to an even amount
       .attr('height', d => height - yScale(d)) // Set the height of the bar according to the scaling

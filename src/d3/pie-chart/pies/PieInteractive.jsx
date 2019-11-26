@@ -1,17 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import * as d3 from 'd3';
 
 const PieInteractive = ({ data }) => {
-  useEffect(() => {
-    drawGraph();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    update(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data]);
-
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
@@ -28,27 +18,27 @@ const PieInteractive = ({ data }) => {
     .value(d => d)
     .sort(null);
 
-  const arcTween = (d, i) => {
+  const arcTween = useCallback((d, i) => {
     const interpolate = d3.interpolate(currentAngles[i], d);
     currentAngles[i] = interpolate(1);
     return t => arc(interpolate(t));
-  };
+  }, [arc, currentAngles]);
 
-  const arcTweenRemove = (d) => {
+  const arcTweenRemove = useCallback((d) => {
     const end = Object.assign({}, d, { startAngle: graphEnd, endAngle: graphEnd });
     const interpolate = d3.interpolate(d, end);
     return t => arc(interpolate(t));
-  };
+  }, [arc, graphEnd]);
 
-  const drawGraph = () => {
+  useEffect(() => {
     d3.select('#pie-interactive')
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
         .attr('transform', `translate(${width / 2}, ${height / 2})`);
-  };
+  }, [margin, height, width]);
 
-  const update = (data) => {
+  useEffect(() => {
     const svg = d3.select('#pie-interactive').select('g');
 
     const colour = d3.scaleLinear()
@@ -90,7 +80,7 @@ const PieInteractive = ({ data }) => {
         .duration(2000)
         .attrTween('d', arcTween)
         .attr('fill', d => colour(d.value));
-  };
+  }, [data, arc, arcTween, arcTweenRemove, currentAngles, graphEnd, pie]);
 
   return <svg id="pie-interactive" />
 };
