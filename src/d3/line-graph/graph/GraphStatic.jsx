@@ -65,7 +65,7 @@ const GraphStatic = () => {
 
     // Create the line generator for drawing
     const line = d3.line()
-      .x((d, i) => xScale(i))
+      .x((_, i) => xScale(i))
       .y(d => yScale(d))
       .curve(d3.curveMonotoneX);
 
@@ -82,7 +82,7 @@ const GraphStatic = () => {
       .data(data)
       .enter()
       .append('circle')
-        .attr('cx', (d, i) => xScale(i))
+        .attr('cx', (_, i) => xScale(i))
         .attr('cy', d => yScale(d))
         .attr('r', 5);
   };

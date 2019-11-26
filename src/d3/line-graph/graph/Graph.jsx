@@ -79,7 +79,7 @@ const Graph = () => {
 
     // Create the line generator for drawing
     const line = d3.line()
-      .x((d, i) => xScale(i))
+      .x((_, i) => xScale(i))
       .y(d => yScale(d))
       .curve(d3.curveMonotoneX);
 
@@ -97,7 +97,7 @@ const Graph = () => {
       .data(data)
       .enter()
       .append('circle')
-        .attr('cx', (d, i) => xScale(i))
+        .attr('cx', (_, i) => xScale(i))
         .attr('cy', d => yScale(d))
         .attr('r', 5);
   };
@@ -140,19 +140,19 @@ const Graph = () => {
 
     // Create the line generator
     const line = d3.line()
-      .x((d, i) => xScale(i))
+      .x((_, i) => xScale(i))
       .y(d => yScale(d))
       .curve(d3.curveMonotoneX);
 
     // Create a line generator for the last used scaling to move the line to the bottom of the graph
     const lineFlatOldScale = d3.line()
-      .x((d, i) => oldScale(i))
+      .x((_, i) => oldScale(i))
       .y(height)
       .curve(d3.curveMonotoneX);
 
     // Create a line generator for the new scaling to draw the line at the bottom of the graph
     const lineFlatNewScale = d3.line()
-      .x((d, i) => xScale(i))
+      .x((_, i) => xScale(i))
       .y(height)
       .curve(d3.curveMonotoneX);
 
@@ -191,7 +191,7 @@ const Graph = () => {
       .transition() // Moves the circles to the correct position on the x axis
       .duration(0) // Happens instantly, transition is used to apply delay
       .delay(750)
-      .attr('cx', (d, i) => xScale(i)) // Set the x position according to the array index
+      .attr('cx', (_, i) => xScale(i)) // Set the x position according to the array index
       .attr('cy', height) // Set the height to the bottom of the graph
       .transition() // Increase the radius so the points appear
       .duration(750)
@@ -207,7 +207,7 @@ const Graph = () => {
       .data(data) // Apply the new data set
       .enter() // Get all data points that are not currently mapped
       .append('circle') // Add a new circle for each new data point
-        .attr('cx', (d, i) => xScale(i)) // Set the x position according to the array index
+        .attr('cx', (_, i) => xScale(i)) // Set the x position according to the array index
         .attr('cy', height) // Set the y position to the bottom of the graph
         .attr('r', 0) // Set the radius of the circle to 0 so it can't be seen
         .transition() // Make the circles visible

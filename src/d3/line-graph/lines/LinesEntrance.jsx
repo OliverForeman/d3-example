@@ -37,7 +37,7 @@ const LinesEntrance = () => {
 
     // Create a line generator for drawing to the canvas
     const line = d3.line()
-      .x((d, i) => xScale(i)) // Position on the x axis according to array index
+      .x((_, i) => xScale(i)) // Position on the x axis according to array index
       .y(d => yScale(d)) // Position on the y axis according to the data value
       .curve(d3.curveMonotoneX); // Apply a curve algorithm for drawing the line
 
@@ -46,7 +46,7 @@ const LinesEntrance = () => {
       .data(data) // Apply the data set
       .enter() // Add new data points
       .append('circle') // Add a circle for each data point
-        .attr('cx', (d, i) => xScale(i)) // Position on the x axis according to the array index
+        .attr('cx', (_, i) => xScale(i)) // Position on the x axis according to the array index
         .attr('cy', d => yScale(d)) // Position on the y axis according to the data value
         .transition() // Start a transition
         .duration(1000)
