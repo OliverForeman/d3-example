@@ -83,17 +83,17 @@ const GraphInteractive = ({ data }) => {
         .call(d3.axisLeft(yScale));
 
       const line = d3.line()
-        .x((d, i) => xScale(i))
+        .x((_, i) => xScale(i))
         .y(d => yScale(d))
         .curve(d3.curveMonotoneX);
 
       const lineFlatOldScale = d3.line()
-        .x((d, i) => oldScale(i))
+        .x((_, i) => oldScale(i))
         .y(height)
         .curve(d3.curveMonotoneX);
 
       const lineFlatNewScale = d3.line()
-        .x((d, i) => xScale(i))
+        .x((_, i) => xScale(i))
         .y(height)
         .curve(d3.curveMonotoneX);
 
@@ -129,7 +129,7 @@ const GraphInteractive = ({ data }) => {
         .transition()
         .duration(0)
         .delay(750)
-        .attr('cx', (d, i) => xScale(i))
+        .attr('cx', (_, i) => xScale(i))
         .attr('cy', height)
         .transition()
         .duration(750)
@@ -144,7 +144,7 @@ const GraphInteractive = ({ data }) => {
         .data(data)
         .enter()
         .append('circle')
-          .attr('cx', (d, i) => xScale(i))
+          .attr('cx', (_, i) => xScale(i))
           .attr('cy', height)
           .attr('r', 0)
           .transition()

@@ -45,7 +45,7 @@ const Lines = () => {
     
     // Create a line generator for drawing to the canvas
     const line = d3.line()
-      .x((d, i) => xScale(i)) // Position on the x axis according to array index
+      .x((_, i) => xScale(i)) // Position on the x axis according to array index
       .y(d => yScale(d)) // Position on the y axis according to the data value
       .curve(d3.curveMonotoneX); // Apply a curve algorithm for drawing the line
 
@@ -63,7 +63,7 @@ const Lines = () => {
       .data(data) // Apply the dataset
       .enter() // Add new data points
       .append('circle') // Add a circle for each data point
-        .attr('cx', (d, i) => xScale(i)) // Position on the x axis according to the array index
+        .attr('cx', (_, i) => xScale(i)) // Position on the x axis according to the array index
         .attr('cy', d => yScale(d)) // Position on the y axis according to the data value
         .attr('r', 5); // Set the radius of the circle
   };
@@ -84,19 +84,19 @@ const Lines = () => {
 
     // Create the line generator for the new scaling
     const line = d3.line()
-      .x((d, i) => xScale(i))
+      .x((_, i) => xScale(i))
       .y(d => yScale(d))
       .curve(d3.curveMonotoneX);
 
     // Create a line generator for the last used scaling to move the line to the bottom of the graph
     const lineFlatOldScale = d3.line()
-      .x((d, i) => oldScale(i))
+      .x((_, i) => oldScale(i))
       .y(height)
       .curve(d3.curveMonotoneX);
 
     // Create a line generator for the new scaling to draw it at the bottom of the graph
     const lineFlatNewScale = d3.line()
-      .x((d, i) => xScale(i))
+      .x((_, i) => xScale(i))
       .y(height)
       .curve(d3.curveMonotoneX);
 
@@ -135,7 +135,7 @@ const Lines = () => {
       .transition() // Move the circles to the correct position on the x axis
       .duration(0) // Happens instantly, transition is used to apply delay
       .delay(750)
-      .attr('cx', (d, i) => xScale(i)) // Set the x position according to the array index
+      .attr('cx', (_, i) => xScale(i)) // Set the x position according to the array index
       .attr('cy', height) // Set the height to the bottom of the graph
       .transition() // Increase the radius to the points appear
       .duration(750)
@@ -151,7 +151,7 @@ const Lines = () => {
       .data(data) // Apply the new data set
       .enter() // Get all data points that are not currently mapped
       .append('circle') // Add a new circle for each new data point
-        .attr('cx', (d, i) => xScale(i)) // Set the x position according to the array index
+        .attr('cx', (_, i) => xScale(i)) // Set the x position according to the array index
         .attr('cy', height) // Set the y position to the bottom of the graph
         .attr('r', 0) // Set the radius of the circle to 0 so it can't be seen
         .transition() // Make the circles visible

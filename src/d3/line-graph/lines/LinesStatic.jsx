@@ -33,7 +33,7 @@ const LinesStatic = () => {
 
     // Create a line generator for drawing to the canvas 
     const line = d3.line()
-      .x((d, i) => xScale(i)) // Position on x axis according to array index
+      .x((_, i) => xScale(i)) // Position on x axis according to array index
       .y(d => yScale(d)) // Position on the y axis according to the data value
       .curve(d3.curveMonotoneX); // Apply a curve algorithm for drawing the line
 
@@ -50,7 +50,7 @@ const LinesStatic = () => {
       .data(data) // Apply the dataset
       .enter() // Add new data points for any not currently mapped
       .append('circle') // Add a circle for each new data point
-        .attr('cx', (d, i) => xScale(i)) // Position on the x axis according to the array index
+        .attr('cx', (_, i) => xScale(i)) // Position on the x axis according to the array index
         .attr('cy', d => yScale(d)) // Position on the y axis according to the data value
         .attr('r', 5); // Set the radius of the circle
   };

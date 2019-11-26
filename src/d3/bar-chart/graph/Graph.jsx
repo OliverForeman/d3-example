@@ -84,7 +84,7 @@ const Graph = () => {
       .data(data)
       .enter()
       .append('rect')
-      .attr('x', (d, i) => xScale(i))
+      .attr('x', (_, i) => xScale(i))
       .attr('y', d => yScale(d))
       .attr('width', xScale.bandwidth()) // Gives the bars an equal width
       .attr('height', d => height - yScale(d))
@@ -149,7 +149,7 @@ const Graph = () => {
       .transition() // Start another transition for the given duration, starting after the delay
       .duration(750)
       .delay(500)
-      .attr('x', (d, i) => xScale(i))
+      .attr('x', (_, i) => xScale(i))
       .attr('width', xScale.bandwidth())
       .transition() // Start a transition for the given duration
       .duration(750)
@@ -162,7 +162,7 @@ const Graph = () => {
       .data(data) // Apply the new dataset
       .enter() // Start handling the new data points
       .append('rect') // Add new rect elements for the new data values
-      .attr('x', (d, i) => xScale(i))
+      .attr('x', (_, i) => xScale(i))
       .attr('y', height)
       .attr('width', xScale.bandwidth())
       .transition()
