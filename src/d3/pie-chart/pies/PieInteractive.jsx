@@ -35,14 +35,14 @@ const PieInteractive = ({ data }) => {
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
-        .attr('transform', `translate(${width / 2}, ${height / 2})`);
+      .attr('transform', `translate(${(width / 2) + margin.left}, ${(height / 2) + margin.top})`);
   }, [margin, height, width]);
 
   useEffect(() => {
     const svg = d3.select('#pie-interactive').select('g');
 
     const colour = d3.scaleLinear()
-      .domain([1, d3.max(data)])
+      .domain(d3.extent(data))
       .range(['#d1e2f3', '#023858']);
 
     const dataReady = pie(data);
