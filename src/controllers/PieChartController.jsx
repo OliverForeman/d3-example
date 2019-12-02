@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import kebabToWords from '../utilities/kebabToWords';
-import PieStatic from '../d3/pie-chart/PieStatic';
-import Pie from '../d3/pie-chart/Pie';
-import PieInteractive from '../d3/pie-chart/PieInteractive';
+import LegendStatic from '../d3/pie-chart/legend/LegendStatic';
+import PieStatic from '../d3/pie-chart/pies/PieStatic';
+import Pie from '../d3/pie-chart/pies/Pie';
+import PieInteractive from '../d3/pie-chart/pies/PieInteractive';
 import DisplayInteractions from '../reusable/DisplayInteractions';
 
 const PieChartController = () => {
-  const graphTypes = ['pie-static', 'pie-animated', 'pie-interactive'];
+  const graphTypes = ['legend-static', 'pie-static', 'pie-animated', 'pie-interactive'];
   const [selectedOption, setSelectedOption] = useState(graphTypes[0]);
   const [data, setData] = useState([]);
 
@@ -18,10 +19,11 @@ const PieChartController = () => {
 
   const getComponent = () => {
     switch (selectedOption) {
+      case 'legend-static': return <LegendStatic />;
       case 'pie-static': return <PieStatic />;
       case 'pie-animated': return <Pie />;
       case 'pie-interactive': return <PieInteractive data={data} />;
-      default: return <PieStatic />;
+      default: return <LegendStatic />;
     }
   };
 

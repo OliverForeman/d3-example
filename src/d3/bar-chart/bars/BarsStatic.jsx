@@ -17,7 +17,7 @@ const BarsStatic = () => {
     // Create a colour scale to use for the bars
     const colour = d3.scaleLinear()
       .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
+      .range(['#d1e2f3', '#023858']);
 
     // Create a scaling for the x axis
     const xScale = d3.scaleBand()

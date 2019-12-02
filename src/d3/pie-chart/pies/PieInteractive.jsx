@@ -35,15 +35,15 @@ const PieInteractive = ({ data }) => {
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
-        .attr('transform', `translate(${width / 2}, ${height / 2})`);
+      .attr('transform', `translate(${(width / 2) + margin.left}, ${(height / 2) + margin.top})`);
   }, [margin, height, width]);
 
   useEffect(() => {
     const svg = d3.select('#pie-interactive').select('g');
 
     const colour = d3.scaleLinear()
-      .domain([1, d3.max(data)])
-      .range(['orange', 'purple']);
+      .domain(d3.extent(data))
+      .range(['#d1e2f3', '#023858']);
 
     const dataReady = pie(data);
 
@@ -53,7 +53,7 @@ const PieInteractive = ({ data }) => {
       .transition()
       .duration(2000)
       .attrTween('d', arcTweenRemove)
-      .attr('fill', 'orange')
+      .attr('fill', '#d1e2f3')
       .remove();
 
     svg.selectAll('.slice')
@@ -72,7 +72,7 @@ const PieInteractive = ({ data }) => {
           currentAngles[d.index] = Object.assign({}, d, { startAngle: graphEnd, endAngle: graphEnd });
           return arc(currentAngles[d.index]);
         })
-        .attr('fill', 'orange')
+        .attr('fill', '#d1e2f3')
         .attr('stroke', 'black')
         .style('stroke-width', '2px')
         .style('opacity', 0.7)
