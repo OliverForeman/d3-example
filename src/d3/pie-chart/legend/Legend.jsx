@@ -125,7 +125,8 @@ const Legend = () => {
       .select('circle')
         .transition()
         .duration(2000)
-        .attr('fill', '#d1e2f3')
+        .attr('cx', -50)
+        .style('opacity', 0)
         .remove();
 
     svg.selectAll('.legend')
@@ -134,11 +135,8 @@ const Legend = () => {
       .select('text')
         .transition()
         .duration(2000)
-        .tween('text', (d, i) => {
-          const interpolate = d3.interpolate(d, 0);
-          const element = d3.select(`#text-${i}`);
-          return t => element.text(textFormat(interpolate(t)));
-        })
+        .attr('x', -35)
+        .style('opacity', 0)
         .remove();
     
     svg.selectAll('.legend')
@@ -177,26 +175,29 @@ const Legend = () => {
 
     legend.append('circle')
       .attr('r', 9)
-      .attr('fill', '#d1e2f3')
+      .attr('fill', d => colour(d))
+      .attr('cx', -50)
+      .style('opacity', 0)
       .transition()
       .duration(2000)
-      .attr('fill', d => colour(d));
+      .attr('cx', 0)
+      .style('opacity', 1);
   
     legend.append('text')
       .attr('id', (_, i) => `text-${i}`)
-      .text(d => d)
-      .attr('x', 15)
+      .text((d, i) => {
+        currentData[i] = d;
+        return d;
+      })
+      .attr('x', -35)
       .attr('y', 6)
       .style('font-size', '1.2rem')
+      .style('opacity', 0)
       .attr('font-weight', 'bold')
       .transition()
       .duration(2000)
-      .tween('text', (d, i) => {
-        const interpolate = d3.interpolate(0, d);
-        currentData[i] = d;
-        const element = d3.select(`#text-${i}`);
-        return t => element.text(textFormat(interpolate(t)));
-      });
+      .attr('x', 15)
+      .style('opacity', 1);
 
     /* Scale Legend */
 
