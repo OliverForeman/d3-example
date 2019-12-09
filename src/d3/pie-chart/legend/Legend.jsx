@@ -125,7 +125,7 @@ const Legend = () => {
       .select('circle')
         .transition()
         .duration(2000)
-        .attr('cx', -50)
+        .attr('cx', -25)
         .style('opacity', 0)
         .remove();
 
@@ -135,7 +135,7 @@ const Legend = () => {
       .select('text')
         .transition()
         .duration(2000)
-        .attr('x', -35)
+        .attr('x', -10)
         .style('opacity', 0)
         .remove();
     
@@ -176,7 +176,7 @@ const Legend = () => {
     legend.append('circle')
       .attr('r', 9)
       .attr('fill', d => colour(d))
-      .attr('cx', -50)
+      .attr('cx', -25)
       .style('opacity', 0)
       .transition()
       .duration(2000)
@@ -189,7 +189,7 @@ const Legend = () => {
         currentData[i] = d;
         return d;
       })
-      .attr('x', -35)
+      .attr('x', -10)
       .attr('y', 6)
       .style('font-size', '1.2rem')
       .style('opacity', 0)
