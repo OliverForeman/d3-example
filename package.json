@@ -15,6 +15,7 @@
     "test": "react-scripts test",
     "test-ci": "react-scripts test --watchAll=false",
     "eject": "react-scripts eject",
+    "lint": "eslint --ext .js --ext .jsx .",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
@@ -34,6 +35,11 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.1.1"
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "gh-pages": "^2.1.1",
+    "prettier": "^1.19.1"
   }
 }
