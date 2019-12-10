@@ -2,10 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const BarsStatic = () => {
-  useEffect(() => {
-    drawGraph();
-  });
-
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
@@ -48,6 +44,10 @@ const BarsStatic = () => {
       .attr('height', d => height - yScale(d)) // Set the height of the bar according to the scaling
       .attr('fill', d => colour(d)); // Colour bar according to data value
   };
+
+  useEffect(() => {
+    drawGraph();
+  });
 
   return <svg id="bars-static" />;
 };

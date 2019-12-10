@@ -2,14 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const LinesEntrance = () => {
-  useEffect(() => {
-    drawGraph();
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  });
-
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
@@ -92,6 +84,14 @@ const LinesEntrance = () => {
   const interval = setInterval(() => {
     update();
   }, 3750);
+  
+  useEffect(() => {
+    drawGraph();
+
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  });
 
   return <svg id="lines-entrance" />
 };

@@ -2,10 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const LegendStatic = () => {
-  useEffect(() => {
-    drawGraph();
-  });
-
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 480 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
@@ -94,6 +90,10 @@ const LegendStatic = () => {
       .select('.domain')
         .attr('visibility', 'hidden');
   };
+  
+  useEffect(() => {
+    drawGraph();
+  });
 
   return (
     <div style={{ display: 'flex' }}>

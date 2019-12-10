@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 import arrayEquals from '../../../utilities/arrayEquals';
 
@@ -161,6 +162,10 @@ const GraphInteractive = ({ data }) => {
   }, [height, width, data, oldData, oldScale]);
 
   return <svg id="lines-graph-interactive" />
+};
+
+GraphInteractive.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.number).isRequired
 };
 
 export default GraphInteractive;

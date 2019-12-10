@@ -4,15 +4,6 @@ import * as d3 from 'd3';
 // See for examples of axis drawing -> https://www.d3-graph-gallery.com/graph/custom_axis.html
 
 const Axis = () => {
-  useEffect(() => {
-    drawGraph();
-
-    return () => {
-      if (interval) clearInterval(interval);
-      timers.forEach(timer => clearTimeout(timer));
-    };
-  });
-
   // Stores timeout IDs to be cleared on component unmount
   const timers = [];
 
@@ -131,6 +122,15 @@ const Axis = () => {
       update([12, 5, 6, 6, 9, 10]);
     }, 6000));
   }, 9000);
+  
+  useEffect(() => {
+    drawGraph();
+
+    return () => {
+      if (interval) clearInterval(interval);
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  });
 
   return <svg id="axis" />
 };

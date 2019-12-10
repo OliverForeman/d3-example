@@ -2,10 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const GraphStatic = () => {
-  useEffect(() => {
-    drawGraph();
-  });
-
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
@@ -80,6 +76,10 @@ const GraphStatic = () => {
       .attr('height', d => height - yScale(d))
       .attr('fill', d => colour(d)); // Set colour according to data value
   };
+  
+  useEffect(() => {
+    drawGraph();
+  });
 
   return <svg id="bars-graph-static" />
 };

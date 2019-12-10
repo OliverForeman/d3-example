@@ -2,15 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const Bars = () => {
-  useEffect(() => {
-    drawGraph();
-
-    return () => {
-      if (interval) clearInterval(interval);
-      timers.forEach(timer => clearTimeout(timer));
-    };
-  });
-
   // Stores timeout IDs to be cleared on component unmount
   const timers = [];
 
@@ -148,6 +139,15 @@ const Bars = () => {
       update([12, 5, 6, 6, 9, 10]);
     }, 6000));
   }, 9500);
+  
+  useEffect(() => {
+    drawGraph();
+
+    return () => {
+      if (interval) clearInterval(interval);
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  });
 
   return <svg id="bars" />;
 };
