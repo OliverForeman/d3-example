@@ -36,7 +36,7 @@ const PieInteractive = ({ data }) => {
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
       .attr('transform', `translate(${(width / 2) + margin.left}, ${(height / 2) + margin.top})`);
-  }, [margin, height, width]);
+  }, [height, width, margin.top, margin.right, margin.bottom, margin.left]);
 
   useEffect(() => {
     const svg = d3.select('#pie-interactive').select('g');

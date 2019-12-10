@@ -53,7 +53,7 @@ const GraphInteractive = ({ data }) => {
       .attr('fill', 'none')
       .attr('stroke', 'black')
       .attr('stroke-width', 3.0);
-  }, [margin, width, height]);
+  }, [width, height, margin.top, margin.right, margin.bottom, margin.left]);
 
   useEffect(() => {
     if (!arrayEquals(data, oldData)) {

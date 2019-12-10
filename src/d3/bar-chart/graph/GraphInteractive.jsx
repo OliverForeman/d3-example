@@ -44,7 +44,7 @@ const GraphInteractive = ({ data }) => {
       .attr('y', -margin.left + 20)
       .attr('x', -margin.top)
       .text('Y Axis');
-  }, [margin, height, width]);
+  }, [height, width, margin.top, margin.right, margin.bottom, margin.left]);
 
   useEffect(() => {
     const svg = d3.select('#bars-graph-interactive').select('g');
