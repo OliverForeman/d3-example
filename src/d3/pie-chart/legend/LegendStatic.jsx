@@ -23,7 +23,7 @@ const LegendStatic = () => {
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
-        .attr('transform', `translate(${width / 2}, ${height / 3})`);
+        .attr('transform', `translate(${width / 2}, ${height / 4})`);
 
     const legend = svg.selectAll('.legend')
       .data(data)
@@ -60,31 +60,28 @@ const LegendStatic = () => {
         .style('margin-top', `${(height / 4) - margin.top}px`)
         .append('canvas')
           .attr('width', 1)
+          .attr('height', lHeight)
           .style('width', `${lWidth}px`)
           .style('height', `${lHeight}px`)
           .node();
 
     const ctx = canvas.getContext('2d');
 
-    const legendScale = d3.scaleLinear()
-      .range([1, lHeight])
-      .domain(colour.domain());
-
-    const image = ctx.createImageData(1, lHeightFull);
-    d3.range(lHeightFull).forEach(i => {
-      const c = d3.rgb(colour(legendScale.invert(i)));
-      image.data[4*i] = c.r;
-      image.data[4*i + 1] = c.g;
-      image.data[4*i + 2] = c.b;
-      image.data[4*i + 3] = 255;
-    });
-    ctx.putImageData(image, 0, 0);
+    const gradient = ctx.createLinearGradient(0, 0, 0, lHeight);
+    gradient.addColorStop(0, '#d1e2f3');
+    gradient.addColorStop(1, '#023858');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, lWidth, lHeight);
 
     const legendSvg = d3.select('#legend-static-container div')
       .append('svg')
         .attr('width', `${lWidthFull}px`)
         .attr('height', `${lHeightFull}px`)
         .attr('transform', `translate(0, ${lMargin.top})`);
+
+    const legendScale = d3.scaleLinear()
+      .range([1, lHeight])
+      .domain(colour.domain());
 
     const legendAxis = d3.axisRight(legendScale)
       .tickSize(6)
