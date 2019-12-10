@@ -22,6 +22,16 @@ jobs:
     - name: npm test
       run: npm run test-ci
 
+  linting:
+    name: Run linting
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: npm install
+      run: npm install
+    - name: Run eslint
+      run: npm run lint
+
   predeploy_and_deploy:
     name: Predeploy and deploy build
     needs: build_and_test
