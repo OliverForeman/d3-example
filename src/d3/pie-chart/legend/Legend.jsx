@@ -38,7 +38,7 @@ const Legend = () => {
       .attr('width', width + margin.left + margin.right)
       .attr('height', height + margin.top + margin.bottom)
       .append('g')
-        .attr('transform', `translate(${width / 2}, ${height / 3})`);
+        .attr('transform', `translate(${width / 2}, ${height / 4})`);
 
     const legend = svg.selectAll('.legend')
       .data(data)
