@@ -2,10 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const LinesStatic = () => {
-  useEffect(() => {
-    drawGraph();
-  });
-
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
@@ -54,6 +50,10 @@ const LinesStatic = () => {
         .attr('cy', d => yScale(d)) // Position on the y axis according to the data value
         .attr('r', 5); // Set the radius of the circle
   };
+  
+  useEffect(() => {
+    drawGraph();
+  });
 
   return <svg id="lines-static" />
 };

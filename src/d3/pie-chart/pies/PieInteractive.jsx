@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import * as d3 from 'd3';
 
 const PieInteractive = ({ data }) => {
@@ -25,7 +26,7 @@ const PieInteractive = ({ data }) => {
   }, [arc, currentAngles]);
 
   const arcTweenRemove = useCallback((d) => {
-    const end = Object.assign({}, d, { startAngle: graphEnd, endAngle: graphEnd });
+    const end = { ...d, startAngle: graphEnd, endAngle: graphEnd };
     const interpolate = d3.interpolate(d, end);
     return t => arc(interpolate(t));
   }, [arc, graphEnd]);
@@ -69,7 +70,7 @@ const PieInteractive = ({ data }) => {
       .append('path')
         .attr('class', 'slice')
         .attr('d', d => {
-          currentAngles[d.index] = Object.assign({}, d, { startAngle: graphEnd, endAngle: graphEnd });
+          currentAngles[d.index] = { ...d, startAngle: graphEnd, endAngle: graphEnd };
           return arc(currentAngles[d.index]);
         })
         .attr('fill', '#d1e2f3')
@@ -83,6 +84,10 @@ const PieInteractive = ({ data }) => {
   }, [data, arc, arcTween, arcTweenRemove, currentAngles, graphEnd, pie]);
 
   return <svg id="pie-interactive" />
+};
+
+PieInteractive.propTypes = {
+  data: PropTypes.arrayOf(PropTypes.number).isRequired
 };
 
 export default PieInteractive;

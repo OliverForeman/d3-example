@@ -2,15 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const Legend = () => {
-  useEffect(() => {
-    drawGraph();
-
-    return () => {
-      if (interval) clearInterval(interval);
-      timers.forEach(timer => clearTimeout(timer));
-    };
-  });
-
   const timers = [];
   let currentData = [];
 
@@ -243,6 +234,15 @@ const Legend = () => {
       update([12, 5, 6, 6, 9, 10]);
     }, 6000));
   }, 9500);
+  
+  useEffect(() => {
+    drawGraph();
+
+    return () => {
+      if (interval) clearInterval(interval);
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  });
 
   return (
     <div style={{ display: 'flex' }}>

@@ -2,15 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const Pie = () => {
-  useEffect(() => {
-    drawGraph();
-
-    return () => {
-      if (interval) clearInterval(interval);
-      timers.forEach(timer => clearTimeout(timer));
-    };
-  });
-
   const timers = [];
 
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
@@ -36,7 +27,7 @@ const Pie = () => {
   };
 
   const arcTweenRemove = (d) => {
-    const end = Object.assign({}, d, { startAngle: graphEnd, endAngle: graphEnd });
+    const end = { ...d, startAngle: graphEnd, endAngle: graphEnd };
     const interpolate = d3.interpolate(d, end);
     return t => arc(interpolate(t));
   };
@@ -60,7 +51,7 @@ const Pie = () => {
       .append('path')
         .attr('class', 'slice')
         .attr('d', arc)
-        .each(d => currentAngles[d.index] = d)
+        .each(d => { currentAngles[d.index] = d })
         .attr('fill', d => colour(d.value))
         .attr('stroke', 'black')
         .style('stroke-width', '2px')
@@ -98,7 +89,7 @@ const Pie = () => {
       .append('path')
         .attr('class', 'slice')
         .attr('d', d => {
-          currentAngles[d.index] = Object.assign({}, d, { startAngle: graphEnd, endAngle: graphEnd });
+          currentAngles[d.index] = { ...d, startAngle: graphEnd, endAngle: graphEnd };
           return arc(currentAngles[d.index]);
         })
         .attr('fill', '#d1e2f3')
@@ -139,6 +130,15 @@ const Pie = () => {
       update([12, 5, 6, 6, 9, 10]);
     }, 6000));
   }, 9500);
+  
+  useEffect(() => {
+    drawGraph();
+
+    return () => {
+      if (interval) clearInterval(interval);
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  });
 
   return <svg id="pie-animated" />
 };

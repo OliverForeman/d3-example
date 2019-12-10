@@ -2,15 +2,6 @@ import React, { useEffect } from 'react';
 import * as d3 from 'd3';
 
 const Graph = () => {
-  useEffect(() => {
-    drawGraph();
-
-    return () => {
-      if (interval) clearInterval(interval);
-      timers.forEach(timer => clearTimeout(timer));
-    };
-  });
-
   // Store timeout IDs to be cleared on component unmount
   const timers = [];
 
@@ -254,6 +245,15 @@ const Graph = () => {
       update([12, 5, 6, 6, 9, 10]);
     }, 9000));
   }, 14500);
+  
+  useEffect(() => {
+    drawGraph();
+
+    return () => {
+      if (interval) clearInterval(interval);
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  });
 
   return <svg id="lines-graph" />
 };

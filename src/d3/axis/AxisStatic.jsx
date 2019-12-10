@@ -4,10 +4,6 @@ import * as d3 from 'd3';
 // See for examples of axis drawing -> https://www.d3-graph-gallery.com/graph/custom_axis.html
 
 const AxisStatic = () => {
-  useEffect(() => {
-    drawGraph();
-  });
-
   const margin = { top: 20, right: 20, bottom: 40, left: 60 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
@@ -58,6 +54,10 @@ const AxisStatic = () => {
       .attr('x', -margin.top) // Move down from edge of graph (moves on y axis due to rotation)
       .text('Y Axis'); // The writing for the title of the axis
   };
+  
+  useEffect(() => {
+    drawGraph();
+  });
 
   return <svg id="axis-static" />
 };

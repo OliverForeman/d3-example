@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import useInputForm from '../utilities/useInputForm';
 import getRandomInt from '../utilities/getRandomInt';
 
@@ -46,7 +47,7 @@ const DisplayInteractions = ({ shouldDisplay, data, setData }) => {
   return (
     <div className={displayInteractionsClass}>
       <form>
-        <input type="number" min="0" {...textInput} />
+        <input type="number" min="0" value={textInput.value} onChange={textInput.onChange} />
         <button type="submit" onClick={addNumberHandler}>Add</button>
         <button type="button" onClick={addRandomNumber}>Add Random</button>
         <button type="button" onClick={addRandomNumbers}>Add <i>X</i> Random</button>
@@ -56,6 +57,12 @@ const DisplayInteractions = ({ shouldDisplay, data, setData }) => {
       </form>
     </div>
   );
+};
+
+DisplayInteractions.propTypes = {
+  shouldDisplay: PropTypes.bool.isRequired,
+  data: PropTypes.arrayOf(PropTypes.number).isRequired,
+  setData: PropTypes.func.isRequired
 };
 
 export default DisplayInteractions;
