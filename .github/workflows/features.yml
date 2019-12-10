@@ -1,6 +1,8 @@
-name: Build and Test
-
-on: [push]
+name: Feature - build, test, lint
+on:
+  push:
+    branches-ignore:
+      - master
 
 jobs:
   build_and_test:
@@ -31,20 +33,3 @@ jobs:
       run: npm install
     - name: Run eslint
       run: npm run lint
-
-  predeploy_and_deploy:
-    name: Predeploy and deploy build
-    needs: build_and_test
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - name: npm install
-      run: npm install
-    - name: predeploy
-      run: npm run predeploy
-    - name: deploy
-      run: echo "Need to authenticate for deployment"
