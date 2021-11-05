@@ -8,7 +8,7 @@ import PieInteractive from '../d3/pie-chart/pies/PieInteractive';
 import DisplayInteractions from '../reusable/DisplayInteractions';
 
 const PieChartController = () => {
-  const graphTypes = ['legend-static', 'pie-static', 'pie-animated', 'pie-interactive'];
+  const graphTypes = ['legend-static', 'legend-animated', 'pie-static', 'pie-animated', 'pie-interactive'];
   const [selectedOption, setSelectedOption] = useState(graphTypes[0]);
   const [data, setData] = useState([]);
 
