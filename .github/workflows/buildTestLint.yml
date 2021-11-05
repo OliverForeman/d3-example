@@ -1,9 +1,5 @@
-name: Feature - build, test, lint
-on:
-  push:
-    branches-ignore:
-      - master
-
+name: Build, Test, Lint
+on: [push]
 jobs:
   build_and_test:
     name: Build and Test on node ${{ matrix.node-version }}
